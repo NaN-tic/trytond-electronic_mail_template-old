@@ -1,6 +1,7 @@
 #!/usr/bin/env python
-# This file is part of Tryton. The COPYRIGHT file at the top level of
-# this repository contains the full copyright notices and license terms.
+#This file is part electronic_mail_template module for Tryton.
+#The COPYRIGHT file at the top level of this repository contains 
+#the full copyright notices and license terms.
 "Setup Electronic Mail Template"
 
 from setuptools import setup
@@ -61,4 +62,3 @@ setup(name='trytond_electronic_mail_template',
     test_suite='tests',
     test_loader='trytond.test_loader:Loader',
 )
-
