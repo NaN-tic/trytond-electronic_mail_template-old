@@ -100,6 +100,14 @@ class Template(ModelSQL, ModelView):
         ]
         return engines
 
+    def get_rec_name(self, ids, name):
+        if not ids:
+            return {}
+        res = {}
+        for mail in self.browse(ids):
+            res[mail.id] = '%s - %s (ID: %s)' % (mail.subject, mail.model.name, mail.id)
+        return res
+
     def check_xml_record(self, ids, values):
         '''It should be possible to overwrite templates'''
         return True

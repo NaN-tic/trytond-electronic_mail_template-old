@@ -1,3 +1,4 @@
+* Add get_rec_name in Template
 * Add __init__ in test directory
 * README and legal notice
 * Initial release
