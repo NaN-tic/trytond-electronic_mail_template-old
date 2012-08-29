@@ -64,6 +64,7 @@ class Template(ModelSQL, ModelView):
     #: is infact the source record to generate an electronic mail
     electronic_mail = fields.Many2One(
         'electronic.mail', 'Email', required=True, ondelete='CASCADE')
+    name = fields.Char('Name', required=True)
     model = fields.Many2One(
         'ir.model', 'Model', required=True, select="1")
 
@@ -99,14 +100,6 @@ class Template(ModelSQL, ModelView):
             ('genshi', 'Genshi'),
         ]
         return engines
-
-    def get_rec_name(self, ids, name):
-        if not ids:
-            return {}
-        res = {}
-        for mail in self.browse(ids):
-            res[mail.id] = '%s - %s (ID: %s)' % (mail.subject, mail.model.name, mail.id)
-        return res
 
     def check_xml_record(self, ids, values):
         '''It should be possible to overwrite templates'''
