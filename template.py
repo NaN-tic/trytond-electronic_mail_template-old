@@ -54,16 +54,16 @@ def recepients_from_fields(email_record):
 
 class Template(ModelSQL, ModelView):
     'Email Template'
-    _name = 'electronic_mail.template'
+    _name = 'electronic.mail.template'
     _description = __doc__
     _inherits = {
-        'electronic_mail': 'electronic_mail',
+        'electronic.mail': 'electronic_mail',
         }
 
     #: The design inherits from elecronic mail because a template
     #: is infact the source record to generate an electronic mail
     electronic_mail = fields.Many2One(
-        'electronic_mail', 'Email', required=True, ondelete='CASCADE')
+        'electronic.mail', 'Email', required=True, ondelete='CASCADE')
     model = fields.Many2One(
         'ir.model', 'Model', required=True, select="1")
 
@@ -74,7 +74,7 @@ class Template(ModelSQL, ModelView):
     plain = fields.Text('Plain Text Body')
     html = fields.Text('HTML Body')
     reports = fields.Many2Many(
-        'electronic_mail.template-ir.action.report',
+        'electronic.mail.template.ir.action.report',
         'template', 'report', 'Reports')
     engine = fields.Selection(
         'get_engines', 'Engine', required=True, select="2")
@@ -248,7 +248,7 @@ class Template(ModelSQL, ModelView):
         """
         template = self.browse(template_id)
         record_object = Pool().get(template.model.model)
-        email_object = Pool().get('electronic_mail')
+        email_object = Pool().get('electronic.mail')
 
         for record in record_object.browse(record_ids):
             email_message = self.render(template, record)
@@ -278,7 +278,7 @@ class Template(ModelSQL, ModelView):
 
         :param email_id: ID of the email to be sent
         """
-        email_obj = Pool().get('electronic_mail')
+        email_obj = Pool().get('electronic.mail')
 
         email_record = email_obj.browse(email_id)
         recepients = recepients_from_fields(email_record)
@@ -294,10 +294,10 @@ Template()
 
 class TemplateReport(ModelSQL):
     'Template - Report Action'
-    _name = 'electronic_mail.template-ir.action.report'
+    _name = 'electronic.mail.template.ir.action.report'
     _description = __doc__
 
-    template = fields.Many2One('electronic_mail.template', 'Template')
+    template = fields.Many2One('electronic.mail.template', 'Template')
     report = fields.Many2One('ir.action.report', 'Report')
 
 TemplateReport()

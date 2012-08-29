@@ -12,7 +12,7 @@ from trytond.model import ModelView, ModelSQL, fields
 
 class ElectronicMail(ModelSQL, ModelView):
     "E-Mail module extended to suit inbuilt reading and templating"
-    _name = 'electronic_mail'
+    _name = 'electronic.mail'
 
     body_html = fields.Function(
         fields.Text('HTML (BODY)'), 'get_email_body')

@@ -14,7 +14,7 @@ class Trigger(ModelSQL, ModelView):
     _name = 'ir.trigger'
 
     email_template = fields.Many2One(
-        'electronic_mail.template', 'Template', 
+        'electronic.mail.template', 'Template', 
         )
 
     def default_model(self):
@@ -33,7 +33,7 @@ class Trigger(ModelSQL, ModelView):
             return False
 
         model_ids = model_obj.search(
-            [('model', '=', 'electronic_mail.template')])
+            [('model', '=', 'electronic.mail.template')])
         assert len(model_ids) == 1, 'Unexpected result for model search'
         return model_ids[0]
 
