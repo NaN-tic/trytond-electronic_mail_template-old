@@ -1,3 +1,4 @@
+* Try/except smtp server connection error
 * Add name field in Template model (usuability)
 * Rename Model name. Replace _ to . (dot)
 * Add get_rec_name in Template

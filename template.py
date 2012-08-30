@@ -86,6 +86,12 @@ class Template(ModelSQL, ModelView):
             'email_template': True,
             })
 
+    def __init__(self):
+        super(Template, self).__init__()
+        self._error_messages.update({
+            'smtp_error': 'Wrong connection SMTP server. Not send email',
+            })
+
     def default_engine(self):
         '''Default Engine'''
         return 'genshi'
@@ -276,10 +282,13 @@ class Template(ModelSQL, ModelView):
         email_record = email_obj.browse(email_id)
         recepients = recepients_from_fields(email_record)
 
-        server = get_smtp_server()
-        server.sendmail(email_record.from_, recepients,
-            email_obj._get_email(email_record))
-        server.quit()
+        try:
+            server = get_smtp_server()
+            server.sendmail(email_record.from_, recepients,
+                email_obj._get_email(email_record))
+            server.quit()
+        except:
+            self.raise_user_error('smtp_error')
         return True
 
 Template()
