@@ -1,3 +1,4 @@
+* FIX Transaction language set_context
 * Plain and html fields translate 
 * Try/except smtp server connection error
 * Add name field in Template model (usuability)

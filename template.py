@@ -165,7 +165,7 @@ class Template(ModelSQL, ModelView):
         if template.language:
             language = self.eval(template, template.language, record)
 
-        with Transaction().set_context(langauge = language):
+        with Transaction().set_context(language = language):
             template = self.browse(template.id)
 
             # Simple rendering fields
