@@ -72,8 +72,8 @@ class Template(ModelSQL, ModelView):
     # safely, the other fields are directly used from electronic_mail itself
     language = fields.Char(
         'Language', help='Expression to find the ISO langauge code', select="2")
-    plain = fields.Text('Plain Text Body')
-    html = fields.Text('HTML Body')
+    plain = fields.Text('Plain Text Body', translate=True)
+    html = fields.Text('HTML Body', translate=True)
     reports = fields.Many2Many(
         'electronic.mail.template.ir.action.report',
         'template', 'report', 'Reports')
