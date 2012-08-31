@@ -1,3 +1,4 @@
+* Subject field translate (ElectronicMail)
 * FIX Transaction language set_context
 * Plain and html fields translate 
 * Try/except smtp server connection error

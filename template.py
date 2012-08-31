@@ -51,6 +51,14 @@ def recepients_from_fields(email_record):
         recepients.extend(split_emails(getattr(email_record, field)))
     return recepients
 
+class ElectronicMail(ModelSQL, ModelView):
+    "E-mail"
+    _name = 'electronic.mail'
+    _description = __doc__
+
+    subject = fields.Char('Subject', translate=True)
+
+ElectronicMail()
 
 class Template(ModelSQL, ModelView):
     'Email Template'
