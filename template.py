@@ -173,7 +173,7 @@ class Template(ModelSQL, ModelView):
         '''
 
         message = MIMEMultipart('alternative')
-        message['date'] = formatdate()
+        message['date'] = formatdate(localtime=1)
 
         language = Transaction().context.get('language', 'en_US')
         if template.language:
