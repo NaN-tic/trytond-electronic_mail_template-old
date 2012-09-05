@@ -1,3 +1,4 @@
+* Mimetype from filename+extension
 * Add extension report file
 * Attach file report. Default Tryton report file is base64
 * Subject field translate (ElectronicMail)
