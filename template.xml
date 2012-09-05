@@ -74,6 +74,8 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
               <field name="from_"/>
               <label name="mailbox"/>
               <field name="mailbox"/>
+              <label name="draft_mailbox"/>
+              <field name="draft_mailbox"/>
               <label name="subject"/>
               <field name="subject"/>
               <label name="signature"/>

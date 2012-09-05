@@ -76,6 +76,8 @@ class Template(ModelSQL, ModelView):
     name = fields.Char('Name', required=True)
     model = fields.Many2One(
         'ir.model', 'Model', required=True, select="1")
+    draft_mailbox = fields.Many2One(
+        'electronic.mail.mailbox', 'Draft Mailbox', required=True)
 
     # All the following fields are expression fields which are evaluated
     # safely, the other fields are directly used from electronic_mail itself
@@ -277,7 +279,7 @@ class Template(ModelSQL, ModelView):
             email_message = self.render(template, record)
             email_id = email_object.create_from_email(
                 email_message, template.mailbox.id)
-            self.send_email(email_id)
+            self.send_email(email_id, template)
         return True
 
     def mail_from_trigger(self, record_ids, trigger_id):
@@ -294,17 +296,27 @@ class Template(ModelSQL, ModelView):
         trigger = trigger_obj.browse(trigger_id)
         return self.render_and_send(trigger.email_template.id, record_ids)
 
-    def send_email(self, email_id):
+    def send_email(self, email_id, template):
         """
         Send out the given email using the SMTP_CLIENT if configured in the
         Tryton Server configuration
 
         :param email_id: ID of the email to be sent
+        :param template: Browse Record of the template
         """
         email_obj = Pool().get('electronic.mail')
 
         email_record = email_obj.browse(email_id)
         recepients = recepients_from_fields(email_record)
+
+        """Validate recipients to send or move email to draft mailbox"""
+        emails = ",".join(recepients)
+        if not email_obj.get_email_valid(emails):
+            """Draft Mailbox. Not send email"""
+            email_obj.write(email_record.id, {
+                'mailbox': template.draft_mailbox,
+                })
+            return False
 
         try:
             server = get_smtp_server()
