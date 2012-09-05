@@ -10,6 +10,7 @@ try:
 except ImportError:
     from StringIO import StringIO
 import mimetypes
+import base64
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
@@ -206,7 +207,7 @@ class Template(ModelSQL, ModelView):
                         ).split('/', 1)
 
                     attachment = MIMEBase(maintype, subtype)
-                    attachment.set_payload(data)
+                    attachment.set_payload(base64.b64encode(data)) 
 
                     attachment.add_header(
                         'Content-Disposition', 'attachment', filename=filename)
