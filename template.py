@@ -200,17 +200,18 @@ class Template(ModelSQL, ModelView):
                     template, record
                     )
                 for report in reports:
-                    data, filename = report[1:3]
+                    ext, data, filename = report[0:4]
                     content_type, _ = mimetypes.guess_type(filename)
                     maintype, subtype = (
                         content_type or 'application/octet-stream'
                         ).split('/', 1)
+                    file_name = '%s.%s' % (filename, ext)
 
                     attachment = MIMEBase(maintype, subtype)
                     attachment.set_payload(base64.b64encode(data)) 
 
                     attachment.add_header(
-                        'Content-Disposition', 'attachment', filename=filename)
+                        'Content-Disposition', 'attachment', filename=file_name)
                     attachment.add_header(
                         'Content-Transfer-Encoding', 'base64')
                     message.attach(attachment)
