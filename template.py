@@ -103,6 +103,9 @@ class Template(ModelSQL, ModelView):
             'smtp_error': 'Wrong connection to SMTP server. Email have not sent',
             })
 
+    def default_template(self):
+        return True
+
     def default_engine(self):
         '''Default Engine'''
         return 'genshi'

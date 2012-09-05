@@ -1,3 +1,4 @@
+* Template. Default template field is True
 * Add signature template email
 * Report filename. File name expresion available in each report
 * Mimetype from filename+extension
