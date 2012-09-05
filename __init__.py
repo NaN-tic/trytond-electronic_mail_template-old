@@ -7,3 +7,4 @@
 from .template import *
 from .electronic_mail import *
 from .trigger import *
+from .report import *

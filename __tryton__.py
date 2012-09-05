@@ -19,6 +19,7 @@
     'xml': [
         'template.xml',
         'trigger.xml',
+        'report.xml',
     ],
     'translation': [
     ],

@@ -98,7 +98,7 @@ class Template(ModelSQL, ModelView):
     def __init__(self):
         super(Template, self).__init__()
         self._error_messages.update({
-            'smtp_error': 'Wrong connection SMTP server. Not send email',
+            'smtp_error': 'Wrong connection to SMTP server. Email have not sent',
             })
 
     def default_engine(self):
@@ -200,7 +200,9 @@ class Template(ModelSQL, ModelView):
                     template, record
                     )
                 for report in reports:
-                    ext, data, filename = report[0:4]
+                    ext, data, filename, file_name = report[0:5]
+                    if file_name:
+                        filename = self.eval(template, file_name, record)
                     filename = ext and '%s.%s' % (filename, ext) or filename
                     content_type, _ = mimetypes.guess_type(filename)
                     maintype, subtype = (
@@ -241,14 +243,15 @@ class Template(ModelSQL, ModelView):
             report_type
             data
             the report name
+            the report file name (optional)
         '''
         reports = [ ]
         for report_action in template.reports:
             report = Pool().get(report_action.report_name, type='report')
-            reports.append(report.execute([record.id], {'id': record.id}))
+            reports.append([report.execute([record.id], {'id': record.id}), report_action.file_name])
 
         # The boolean for direct print in the tuple is useless for emails
-        return [(r[0], r[1], r[3]) for r in reports]
+        return [(r[0][0], r[0][1], r[0][3], r[1]) for r in reports]
 
     def render_and_send(self, template_id, record_ids):
         """
