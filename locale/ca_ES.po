@@ -1,0 +1,187 @@
+# 
+msgid ""
+msgstr "Content-Type: text/plain; charset=utf-8\n"
+
+msgctxt "error:electronic.mail.template:"
+msgid "Wrong connection to SMTP server. Email have not sent"
+msgstr "Ha fallat la connexió servidor SMTP. No s'ha enviat el correu."
+
+msgctxt "field:electronic.mail,body_html:"
+msgid "HTML (BODY)"
+msgstr "HTML (Body)"
+
+msgctxt "field:electronic.mail,body_plain:"
+msgid "Plain Text (BODY)"
+msgstr "Text pla (BODY)"
+
+msgctxt "field:electronic.mail,flag_send:"
+msgid "Send"
+msgstr "Enviat"
+
+msgctxt "field:electronic.mail.template,create_date:"
+msgid "Create Date"
+msgstr "Data creació"
+
+msgctxt "field:electronic.mail.template,create_uid:"
+msgid "Create User"
+msgstr "Crear usuari"
+
+msgctxt "field:electronic.mail.template,draft_mailbox:"
+msgid "Draft Mailbox"
+msgstr "Bústia esborrany"
+
+msgctxt "field:electronic.mail.template,electronic_mail:"
+msgid "Email"
+msgstr "Correu electrònic"
+
+msgctxt "field:electronic.mail.template,engine:"
+msgid "Engine"
+msgstr "Motor"
+
+msgctxt "field:electronic.mail.template,html:"
+msgid "HTML Body"
+msgstr "HTML Body"
+
+msgctxt "field:electronic.mail.template,id:"
+msgid "ID"
+msgstr "ID"
+
+msgctxt "field:electronic.mail.template,language:"
+msgid "Language"
+msgstr "Idioma"
+
+msgctxt "field:electronic.mail.template,model:"
+msgid "Model"
+msgstr "Model"
+
+msgctxt "field:electronic.mail.template,name:"
+msgid "Name"
+msgstr "Nom"
+
+msgctxt "field:electronic.mail.template,plain:"
+msgid "Plain Text Body"
+msgstr "Cos text pla"
+
+msgctxt "field:electronic.mail.template,rec_name:"
+msgid "Name"
+msgstr "Nom"
+
+msgctxt "field:electronic.mail.template,reports:"
+msgid "Reports"
+msgstr "Informes"
+
+msgctxt "field:electronic.mail.template,signature:"
+msgid "Use Signature"
+msgstr "Utilitzar la signatura"
+
+msgctxt "field:electronic.mail.template,triggers:"
+msgid "Triggers"
+msgstr "Disparadors"
+
+msgctxt "field:electronic.mail.template,write_date:"
+msgid "Write Date"
+msgstr "Data modificació"
+
+msgctxt "field:electronic.mail.template,write_uid:"
+msgid "Write User"
+msgstr "Usuari modificació"
+
+msgctxt "field:electronic.mail.template.ir.action.report,create_date:"
+msgid "Create Date"
+msgstr "Data creació"
+
+msgctxt "field:electronic.mail.template.ir.action.report,create_uid:"
+msgid "Create User"
+msgstr "Crear usuari"
+
+msgctxt "field:electronic.mail.template.ir.action.report,id:"
+msgid "ID"
+msgstr "ID"
+
+msgctxt "field:electronic.mail.template.ir.action.report,rec_name:"
+msgid "Name"
+msgstr "Nom"
+
+msgctxt "field:electronic.mail.template.ir.action.report,report:"
+msgid "Report"
+msgstr "Informe"
+
+msgctxt "field:electronic.mail.template.ir.action.report,template:"
+msgid "Template"
+msgstr "Plantilla"
+
+msgctxt "field:electronic.mail.template.ir.action.report,write_date:"
+msgid "Write Date"
+msgstr "Data modificació"
+
+msgctxt "field:electronic.mail.template.ir.action.report,write_uid:"
+msgid "Write User"
+msgstr "Usuari modificació"
+
+msgctxt "field:ir.action.report,file_name:"
+msgid "File Name Pattern"
+msgstr "Nom del fitxer"
+
+msgctxt "field:ir.trigger,email_template:"
+msgid "Template"
+msgstr "Plantilla"
+
+msgctxt "help:electronic.mail.template,language:"
+msgid "Expression to find the ISO langauge code"
+msgstr "Expressió per cercar el codi ISO del idioma"
+
+msgctxt "help:electronic.mail.template,signature:"
+msgid "The signature from the User details will be appened to the mail."
+msgstr "La firma del usuari serà afegit al correu"
+
+msgctxt "help:ir.action.report,file_name:"
+msgid "File name e-mail attachment without extension. eg. 2012_SO003"
+msgstr "Nom del fitxer sense la extensió, per exemple 2012_V001"
+
+msgctxt "model:electronic.mail.template,name:"
+msgid "Email Template"
+msgstr "Plantilla correu"
+
+msgctxt "model:electronic.mail.template.ir.action.report,name:"
+msgid "Template - Report Action"
+msgstr "Plantilla - Acció informe"
+
+msgctxt "model:ir.action,name:act_template_form"
+msgid "Templates"
+msgstr "Plantilles"
+
+msgctxt "model:ir.ui.menu,name:menu_email_template"
+msgid "Templates"
+msgstr "Plantilles"
+
+msgctxt "view:electronic.mail.template:"
+msgid "Advanced"
+msgstr "Avançat"
+
+msgctxt "view:electronic.mail.template:"
+msgid "Email"
+msgstr "Correu electrònic"
+
+msgctxt "view:electronic.mail.template:"
+msgid "Email Templates"
+msgstr "Plantilla correu"
+
+msgctxt "view:electronic.mail.template:"
+msgid "General"
+msgstr "General"
+
+msgctxt "view:electronic.mail.template:"
+msgid "Reports"
+msgstr "Informes"
+
+msgctxt "view:electronic.mail:"
+msgid "Email File"
+msgstr "Fitxer Email"
+
+msgctxt "view:electronic.mail:"
+msgid "HTML"
+msgstr "HTML"
+
+msgctxt "view:electronic.mail:"
+msgid "Plain Text"
+msgstr "Text pla"
