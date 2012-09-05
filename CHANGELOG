@@ -1,3 +1,4 @@
+* When send_email, ElectronicMail flag send field is True
 * Date when generate email use localtime (time server)
 * Template. Default template field is True
 * Add signature template email

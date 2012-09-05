@@ -311,6 +311,9 @@ class Template(ModelSQL, ModelView):
             server.sendmail(email_record.from_, recepients,
                 email_obj._get_email(email_record))
             server.quit()
+            email_obj.write(email_record.id, {
+                'flag_send': True,
+                })
         except:
             self.raise_user_error('smtp_error')
         return True
