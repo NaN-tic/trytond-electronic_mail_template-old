@@ -22,6 +22,7 @@
         'report.xml',
     ],
     'translation': [
+        'locale/es_ES.po',
     ],
 }
 
