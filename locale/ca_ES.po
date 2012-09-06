@@ -4,7 +4,9 @@ msgstr "Content-Type: text/plain; charset=utf-8\n"
 
 msgctxt "error:electronic.mail.template:"
 msgid "Not valid recipients emails. Check emails in TO, CC or BBC"
-msgstr "Els correus dels destinataris no son correctes. Revisi els camps A, CC i BBC."
+msgstr ""
+"Els correus dels destinataris no son correctes. Revisi els camps A, CC i "
+"BBC."
 
 msgctxt "error:electronic.mail.template:"
 msgid "Wrong connection to SMTP server. Email have not sent"
@@ -139,8 +141,9 @@ msgid "The signature from the User details will be appened to the mail."
 msgstr "La firma del usuari serà afegit al correu"
 
 msgctxt "help:ir.action.report,file_name:"
-msgid "File name e-mail attachment without extension. eg. 2012_SO003"
-msgstr "Nom del fitxer sense la extensió, per exemple 2012_V001"
+msgid ""
+"File name e-mail attachment without extension. eg. sale_${record.reference}"
+msgstr "Nom del fitxer sense la extensió, ex. venda_${record.reference}"
 
 msgctxt "model:electronic.mail.template,name:"
 msgid "Email Template"

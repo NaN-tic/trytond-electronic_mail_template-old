@@ -8,7 +8,7 @@ class ActionReport(ModelSQL, ModelView):
     "Action report"
     _name = 'ir.action.report'
 
-    file_name = fields.Char('File Name Pattern', 
-        help='File name e-mail attachment without extension. eg. 2012_SO003')
+    file_name = fields.Char('File Name Pattern', translate=True, 
+        help='File name e-mail attachment without extension. eg. sale_${record.reference}')
 
 ActionReport()
