@@ -120,9 +120,23 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
       <field name="view" ref="template_view_form"/>
       <field name="act_window" ref="act_template_form"/>
     </record>
+    <record model="ir.rule.group" id="rule_group_read_template">
+      <field name="model" search="[('model', '=', 'electronic.mail.template')]"/>
+      <field name="global_p" eval="True"/>
+      <field name="default_p" eval="False"/>
+      <field name="perm_read" eval="True"/>
+      <field name="perm_write" eval="False"/>
+      <field name="perm_create" eval="False"/>
+      <field name="perm_delete" eval="False"/>
+    </record>
     <menuitem action="act_template_form" 
       parent="electronic_mail.menu_email_management"
       id="menu_email_template" sequence="90"/>
-
+    <record model="ir.ui.menu-res.group"
+        id="menu_email_template_group_email_admin">
+        <field name="menu" ref="menu_email_template"/>
+        <field name="group" ref="electronic_mail.group_email_admin"/>
+    </record>
+ 
   </data>
 </tryton>
