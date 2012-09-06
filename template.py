@@ -232,9 +232,10 @@ class Template(ModelSQL, ModelView):
             if template.signature:
                 user_obj = Pool().get('res.user')
                 user = user_obj.browse(Transaction().user)
-                signature = user.signature.encode("ASCII", 'ignore')
-                plain = '%s\n--\n%s' % (plain, signature)
-                html = '%s<br>--<br>%s' % (plain, signature.replace('\n', '<br>'))
+                if user.signature:
+                    signature = user.signature.encode("ASCII", 'ignore')
+                    plain = '%s\n--\n%s' % (plain, signature)
+                    html = '%s<br>--<br>%s' % (plain, signature.replace('\n', '<br>'))
             message.attach(MIMEText(plain, 'plain'))
             message.attach(MIMEText(html, 'html'))
 

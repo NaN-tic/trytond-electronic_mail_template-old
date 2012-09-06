@@ -1,3 +1,4 @@
+* Add signature if template and user have signature
 * Add event if party_event is installed
 * Available Send Email by user (button)
 * Usability: Access Template user email group (menu & rule)
