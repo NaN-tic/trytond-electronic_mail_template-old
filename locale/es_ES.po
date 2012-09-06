@@ -3,6 +3,10 @@ msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
 
 msgctxt "error:electronic.mail.template:"
+msgid "Not valid recipients emails. Check emails in TO, CC or BBC"
+msgstr "Los correos de los destinatarios no son correctos. Revise los campos A, CC y BCC."
+
+msgctxt "error:electronic.mail.template:"
 msgid "Wrong connection to SMTP server. Email have not sent"
 msgstr "No se ha podido conectar al servidor SMTP. Correo no enviado"
 
@@ -15,8 +19,8 @@ msgid "Plain Text (BODY)"
 msgstr "Texto plano (BODY)"
 
 msgctxt "field:electronic.mail,flag_send:"
-msgid "Send"
-msgstr "Enviar"
+msgid "Sent"
+msgstr "Enviado"
 
 msgctxt "field:electronic.mail.template,create_date:"
 msgid "Create Date"
@@ -185,3 +189,7 @@ msgstr "HTML"
 msgctxt "view:electronic.mail:"
 msgid "Plain Text"
 msgstr "Texto plano"
+
+msgctxt "view:electronic.mail:"
+msgid "Send Email"
+msgstr "Enviar correo"
