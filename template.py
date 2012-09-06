@@ -281,6 +281,19 @@ class Template(ModelSQL, ModelView):
             email_id = email_object.create_from_email(
                 email_message, template.mailbox.id)
             self.send_email(email_id, template)
+
+            #add event if party_event is installed
+            cursor = Transaction().cursor
+            cursor.execute("SELECT state from ir_module_module where state='installed' and name = 'party_event'")
+            party_event = cursor.fetchall()
+            if template.party and party_event:
+                party = self.eval(template, template.party, record)
+                resource = 'electronic.mail,%s' % email_id
+                values = {
+                    'subject':email_message.get('subject'),
+                    'description':self.eval(template, template.plain, record),
+                }
+                Pool().get('party.event').create_event(party, resource, values)
         return True
 
     def mail_from_trigger(self, record_ids, trigger_id):
