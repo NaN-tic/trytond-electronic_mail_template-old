@@ -103,6 +103,7 @@ class Template(ModelSQL, ModelView):
         super(Template, self).__init__()
         self._error_messages.update({
             'smtp_error': 'Wrong connection to SMTP server. Email have not sent',
+            'recipients_error': 'Not valid recipients emails. Check emails in TO, CC or BBC',
             })
 
     def default_template(self):
@@ -296,7 +297,7 @@ class Template(ModelSQL, ModelView):
         trigger = trigger_obj.browse(trigger_id)
         return self.render_and_send(trigger.email_template.id, record_ids)
 
-    def send_email(self, email_id, template):
+    def send_email(self, email_id, template=False):
         """
         Send out the given email using the SMTP_CLIENT if configured in the
         Tryton Server configuration
@@ -312,6 +313,8 @@ class Template(ModelSQL, ModelView):
         """Validate recipients to send or move email to draft mailbox"""
         emails = ",".join(recepients)
         if not email_obj.get_email_valid(emails):
+            if not template:
+                self.raise_user_error('recipients_error')
             """Draft Mailbox. Not send email"""
             email_obj.write(email_record.id, {
                 'mailbox': template.draft_mailbox,
