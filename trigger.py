@@ -29,16 +29,16 @@ class Trigger:
         """If invoked from the email_template fill 
         action model as email_template
         """
-        model_obj = Pool().get('ir.model')
+        Model = Pool().get('ir.model')
 
         email_trigger = Transaction().context.get('email_template', False)
         if not email_trigger:
             return False
 
-        model_ids = model_obj.search(
+        model_ids = Model.search(
             [('model', '=', 'electronic.mail.template')])
         assert len(model_ids) == 1, 'Unexpected result for model search'
-        return model_ids[0]
+        return model_ids[0].id
 
     @staticmethod
     def default_action_function():
@@ -47,4 +47,3 @@ class Trigger:
         """
         email_trigger = Transaction().context.get('email_template', False)
         return email_trigger and 'mail_from_trigger' or False
-

@@ -2,8 +2,6 @@
 #This file is part electronic_mail_template module for Tryton.
 #The COPYRIGHT file at the top level of this repository contains 
 #the full copyright notices and license terms.
-"Email"
-
 from email import message_from_string
 from collections import defaultdict
 
@@ -49,10 +47,9 @@ class ElectronicMail(ModelSQL, ModelView):
         '''It should be possible to overwrite templates'''
         return True
 
+    @classmethod
     @ModelView.button
-    def send_mail(self, ids):
-        template_obj = Pool().get('electronic.mail.template')
-        for email_id in ids:
-            template_obj.send_email(email_id)
-        return True
-
+    def send_mail(self, emails):
+        Template = Pool().get('electronic.mail.template')
+        for email in emails:
+            Template.send_email(email)

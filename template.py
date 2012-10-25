@@ -125,6 +125,7 @@ class Template(ModelSQL, ModelView):
         '''It should be possible to overwrite templates'''
         return True
 
+    @classmethod
     def eval(self, template, expression, record):
         '''Evaluates the given :attr:expression
 
@@ -135,13 +136,15 @@ class Template(ModelSQL, ModelView):
         engine_method = getattr(self, '_engine_' + template.engine)
         return engine_method(expression, record)
 
-    def template_context(self, record):
+    @staticmethod
+    def template_context(record):
         """Generate the tempalte context
 
         This is mainly to assist in the inheritance pattern
         """
         return {'record': record}
 
+    @classmethod
     def _engine_python(self, expression, record):
         '''Evaluate the pythonic expression and return its value
         '''
@@ -152,6 +155,7 @@ class Template(ModelSQL, ModelView):
         template_context = self.template_context(record)
         return safe_eval(expression, template_context)
 
+    @classmethod
     def _engine_genshi(self, expression, record):
         '''
         :param expression: Expression to evaluate
@@ -164,6 +168,7 @@ class Template(ModelSQL, ModelView):
         template_context = self.template_context(record)
         return template.generate(**template_context).render(encoding='UTF-8')
 
+    @classmethod
     def render(self, template, record):
         '''Renders the template and returns as email object
         :param template: Browse Record of the template
@@ -180,7 +185,7 @@ class Template(ModelSQL, ModelView):
             language = self.eval(template, template.language, record)
 
         with Transaction().set_context(language = language):
-            template = self.browse(template.id)
+            template = self(template.id)
 
             # Simple rendering fields
             simple_fields = {
@@ -227,8 +232,8 @@ class Template(ModelSQL, ModelView):
             plain = self.eval(template, template.plain, record)
             html = self.eval(template, template.html, record)
             if template.signature:
-                user_obj = Pool().get('res.user')
-                user = user_obj.browse(Transaction().user)
+                User = Pool().get('res.user')
+                user = User(Transaction().user)
                 if user.signature:
                     signature = user.signature.encode("ASCII", 'ignore')
                     plain = '%s\n--\n%s' % (plain, signature)
@@ -245,6 +250,7 @@ class Template(ModelSQL, ModelView):
 
         return message
 
+    @classmethod
     def render_reports(self, template, record):
         '''Renders the reports and returns as a list of tuple
 
@@ -265,38 +271,39 @@ class Template(ModelSQL, ModelView):
         # The boolean for direct print in the tuple is useless for emails
         return [(r[0][0], r[0][1], r[0][3], r[1]) for r in reports]
 
-    def render_and_send(self, template_id, record_ids):
+    @classmethod
+    def render_and_send(self, template_id, records):
         """
         Render the template identified by template_id for
         the records identified from record_ids
         """
-        template = self.browse(template_id)
-        record_object = Pool().get(template.model.model)
-        email_object = Pool().get('electronic.mail')
-
-        for record in record_object.browse(record_ids):
+        template = self(template_id)
+        Record = Pool().get(template.model.model)
+        ElectronicMail = Pool().get('electronic.mail')
+        for record in records:
             email_message = self.render(template, record)
-            email_id = email_object.create_from_email(
+            email_id = ElectronicMail.create_from_email(
                 email_message, template.mailbox.id)
             self.send_email(email_id, template)
-
             self.add_event(template, record, email_id, email_message) #add event
         return True
 
-    def mail_from_trigger(self, record_ids, trigger_id):
+    @classmethod
+    def mail_from_trigger(self, records, trigger_id):
         """
         To be used with ir.trigger to send mails automatically
 
         The process involves identifying the tempalte which needs
         to be pulled when the trigger is.
 
-        :param record_ids: IDs of the records
+        :param records: Object of the records
         :param trigger_id: ID of the trigger
         """
-        trigger_obj = Pool().get('ir.trigger')
-        trigger = trigger_obj.browse(trigger_id)
-        return self.render_and_send(trigger.email_template.id, record_ids)
+        Trigger = Pool().get('ir.trigger')
+        trigger = Trigger(trigger_id)
+        return self.render_and_send(trigger.email_template.id, records)
 
+    @classmethod
     def send_email(self, email_id, template=False):
         """
         Send out the given email using the SMTP_CLIENT if configured in the
@@ -305,34 +312,35 @@ class Template(ModelSQL, ModelView):
         :param email_id: ID of the email to be sent
         :param template: Browse Record of the template
         """
-        email_obj = Pool().get('electronic.mail')
+        ElectronicMail = Pool().get('electronic.mail')
 
-        email_record = email_obj.browse(email_id)
-        recepients = recepients_from_fields(email_record)
+        email = ElectronicMail(email_id)
+        recepients = recepients_from_fields(email)
 
         """Validate recipients to send or move email to draft mailbox"""
         emails = ",".join(recepients)
-        if not email_obj.get_email_valid(emails):
+        if not ElectronicMail.get_email_valid(emails):
             if not template:
                 self.raise_user_error('recipients_error')
             """Draft Mailbox. Not send email"""
-            email_obj.write(email_record.id, {
+            ElectronicMail.write([email], {
                 'mailbox': template.draft_mailbox,
                 })
             return False
 
         try:
             server = get_smtp_server()
-            server.sendmail(email_record.from_, recepients,
-                email_obj._get_email(email_record))
+            server.sendmail(email.from_, recepients,
+                ElectronicMail._get_email(email))
             server.quit()
-            email_obj.write(email_record.id, {
+            ElectronicMail.write([email], {
                 'flag_send': True,
                 })
         except:
             self.raise_user_error('smtp_error')
         return True
 
+    @classmethod
     def add_event(self, template, record, email_id, email_message):
         """
         Add event if party_event is installed
@@ -361,4 +369,3 @@ class TemplateReport(ModelSQL):
 
     template = fields.Many2One('electronic.mail.template', 'Template')
     report = fields.Many2One('ir.action.report', 'Report')
-
