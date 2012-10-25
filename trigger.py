@@ -3,26 +3,29 @@
 #The COPYRIGHT file at the top level of this repository contains 
 #the full copyright notices and license terms.
 "Trigger Extension"
-
 from trytond.model import ModelSQL, ModelView, fields
 from trytond.transaction import Transaction
-from trytond.pool import Pool
+from trytond.pool import Pool, PoolMeta
 
+__all__ = ['Trigger']
+__metaclass__ = PoolMeta
 
-class Trigger(ModelSQL, ModelView):
+class Trigger:
     "Extend triggers to use Email template"
-    _name = 'ir.trigger'
+    __name__ = 'ir.trigger'
 
     email_template = fields.Many2One(
         'electronic.mail.template', 'Template', 
         )
 
-    def default_model(self):
+    @staticmethod
+    def default_model():
         """If invoked from the email_template fill model
         """
         return Transaction().context.get('model', False)
 
-    def default_action_model(self):
+    @staticmethod
+    def default_action_model():
         """If invoked from the email_template fill 
         action model as email_template
         """
@@ -37,11 +40,11 @@ class Trigger(ModelSQL, ModelView):
         assert len(model_ids) == 1, 'Unexpected result for model search'
         return model_ids[0]
 
-    def default_action_function(self):
+    @staticmethod
+    def default_action_function():
         """If invoked from the email_template fill
         action function as 'mail_from_trigger'
         """
         email_trigger = Transaction().context.get('email_template', False)
         return email_trigger and 'mail_from_trigger' or False
 
-Trigger()

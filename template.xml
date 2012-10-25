@@ -14,7 +14,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
             <xpath
               expr="/form/group[@id=&quot;send_area&quot;]/field[@name=&quot;flag_send&quot;]"
               position="after">
-              <button name="send_mail" type="object" string="Send Email" icon="tryton-ok"/>
+              <button name="send_mail" string="Send Email" icon="tryton-ok"/>
             </xpath>
             <xpath expr="/form/field[@name='email']" position="replace">
               <notebook colspan="4">

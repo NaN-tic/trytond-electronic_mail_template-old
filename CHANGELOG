@@ -1,3 +1,8 @@
+Version 2.6.0 - 2012-10-08
+* Simplify module information with python configuration
+* Active Record
+
+Version 2.4.0 - 2012-09-06
 * Add signature if template and user have signature
 * Add event if party_event is installed
 * Available Send Email by user (button)

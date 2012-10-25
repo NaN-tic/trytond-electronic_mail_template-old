@@ -11,41 +11,41 @@ from trytond.model import ModelView, ModelSQL, fields
 from trytond.pool import Pool
 from trytond.pyson import Eval
 
+__all__ = ['ElectronicMail']
 
 class ElectronicMail(ModelSQL, ModelView):
     "E-Mail module extended to suit inbuilt reading and templating"
-    _name = 'electronic.mail'
+    __name__ = 'electronic.mail'
 
+    subject = fields.Char('Subject', translate=True)
     body_html = fields.Function(
         fields.Text('HTML (BODY)'), 'get_email_body')
     body_plain = fields.Function(
         fields.Text('Plain Text (BODY)'), 'get_email_body')
 
-    def __init__(self):
-        super(ElectronicMail, self).__init__()
-        self._buttons.update({
+    @classmethod
+    def __setup__(cls):
+        super(ElectronicMail, cls).__setup__()
+        cls._buttons.update({
                 'send_mail': {
                     'invisible': Eval('body_plain') == '',
                     },
                 })
 
-    def get_email_body(self, ids, names):
+    def get_email_body(self, name):
         """Returns the email body
         """
-        result = dict.fromkeys(names)
-        for name in names:
-            result[name] = defaultdict(unicode).fromkeys(ids)
-
-        for email in self.browse(ids):
-            message = message_from_string(self._get_email(email))
-            for part in message.walk():
-                content_type = part.get_content_type()
-                for name in names:
-                    if content_type == 'text/' + name.lstrip('body_'):
-                        result[name][email.id] = part.get_payload()
+        result = ''
+        test = defaultdict(unicode).fromkeys(name)
+        message = message_from_string(self._get_email(self))
+        for part in message.walk():
+            content_type = part.get_content_type()
+            if content_type == 'text/plain':
+                result = part.get_payload()
         return result
 
-    def check_xml_record(self, ids, values):
+    @classmethod
+    def check_xml_record(cls, records, values):
         '''It should be possible to overwrite templates'''
         return True
 
@@ -56,4 +56,3 @@ class ElectronicMail(ModelSQL, ModelView):
             template_obj.send_email(email_id)
         return True
 
-ElectronicMail()

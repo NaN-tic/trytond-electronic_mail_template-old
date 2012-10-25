@@ -23,7 +23,6 @@ from trytond.transaction import Transaction
 from trytond.pyson import Eval
 from trytond.pool import Pool
 
-
 def split_emails(email_ids):
     """Email IDs could be separated by ';' or ','
 
@@ -52,19 +51,12 @@ def recepients_from_fields(email_record):
         recepients.extend(split_emails(getattr(email_record, field)))
     return recepients
 
-class ElectronicMail(ModelSQL, ModelView):
-    "E-mail"
-    _name = 'electronic.mail'
-    _description = __doc__
+__all__ = ['Template', 'TemplateReport']
 
-    subject = fields.Char('Subject', translate=True)
-
-ElectronicMail()
 
 class Template(ModelSQL, ModelView):
     'Email Template'
-    _name = 'electronic.mail.template'
-    _description = __doc__
+    __name__ = 'electronic.mail.template'
     _inherits = {
         'electronic.mail': 'electronic_mail',
         }
@@ -99,21 +91,25 @@ class Template(ModelSQL, ModelView):
     signature =  fields.Boolean('Use Signature',
         help='The signature from the User details will be appened to the mail.')
 
-    def __init__(self):
-        super(Template, self).__init__()
-        self._error_messages.update({
+    @classmethod
+    def __setup__(cls):
+        super(Template, cls).__setup__()
+        cls._error_messages.update({
             'smtp_error': 'Wrong connection to SMTP server. Email have not sent',
             'recipients_error': 'Not valid recipients emails. Check emails in TO, CC or BBC',
             })
 
-    def default_template(self):
+    @staticmethod
+    def default_template():
         return True
 
-    def default_engine(self):
+    @staticmethod
+    def default_engine():
         '''Default Engine'''
         return 'genshi'
 
-    def get_engines(self):
+    @classmethod
+    def get_engines(cls):
         '''Returns the engines as list of tuple
 
         :return: List of tuples
@@ -124,7 +120,8 @@ class Template(ModelSQL, ModelView):
         ]
         return engines
 
-    def check_xml_record(self, ids, values):
+    @classmethod
+    def check_xml_record(cls, records, values):
         '''It should be possible to overwrite templates'''
         return True
 
@@ -283,18 +280,7 @@ class Template(ModelSQL, ModelView):
                 email_message, template.mailbox.id)
             self.send_email(email_id, template)
 
-            #add event if party_event is installed
-            cursor = Transaction().cursor
-            cursor.execute("SELECT state from ir_module_module where state='installed' and name = 'party_event'")
-            party_event = cursor.fetchall()
-            if template.party and party_event:
-                party = self.eval(template, template.party, record)
-                resource = 'electronic.mail,%s' % email_id
-                values = {
-                    'subject':email_message.get('subject'),
-                    'description':self.eval(template, template.plain, record),
-                }
-                Pool().get('party.event').create_event(party, resource, values)
+            self.add_event(template, record, email_id, email_message) #add event
         return True
 
     def mail_from_trigger(self, record_ids, trigger_id):
@@ -347,15 +333,32 @@ class Template(ModelSQL, ModelView):
             self.raise_user_error('smtp_error')
         return True
 
-Template()
+    def add_event(self, template, record, email_id, email_message):
+        """
+        Add event if party_event is installed
+        :param template: Browse Record of the template
+        :param record: Browse record of the record
+        :param email_id: ID email to send
+        :param email_message: Data email to extract values
+        """
+        cursor = Transaction().cursor
+        cursor.execute("SELECT state from ir_module_module where state='installed' and name = 'party_event'")
+        party_event = cursor.fetchall()
+        if template.party and party_event:
+            party = self.eval(template, template.party, record)
+            resource = 'electronic.mail,%s' % email_id
+            values = {
+                'subject':email_message.get('subject'),
+                'description':self.eval(template, template.plain, record),
+            }
+            Pool().get('party.event').create_event(party, resource, values)
+        return True
 
 
 class TemplateReport(ModelSQL):
     'Template - Report Action'
-    _name = 'electronic.mail.template.ir.action.report'
-    _description = __doc__
+    __name__ = 'electronic.mail.template.ir.action.report'
 
     template = fields.Many2One('electronic.mail.template', 'Template')
     report = fields.Many2One('ir.action.report', 'Report')
 
-TemplateReport()
