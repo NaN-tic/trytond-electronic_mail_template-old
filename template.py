@@ -23,7 +23,7 @@ from trytond.transaction import Transaction
 from trytond.pyson import Eval
 from trytond.pool import Pool
 
-def split_emails(email_ids):
+def split_emails(emails):
     """Email IDs could be separated by ';' or ','
 
     >>> email_list = '1@x.com;2@y.com , 3@z.com '
@@ -34,10 +34,10 @@ def split_emails(email_ids):
     :param email_ids: email id
     :type email_ids: str or unicode
     """
-    if not email_ids:
-        return [ ]
-    email_ids = email_ids.replace(' ', '').replace(',', ';')
-    return email_ids.split(';')
+    if not emails:
+        return []
+    emails = emails.replace(' ', '').replace(',', ';')
+    return emails.split(';')
 
 
 def recepients_from_fields(email_record):
@@ -282,10 +282,10 @@ class Template(ModelSQL, ModelView):
         ElectronicMail = Pool().get('electronic.mail')
         for record in records:
             email_message = self.render(template, record)
-            email_id = ElectronicMail.create_from_email(
+            email = ElectronicMail.create_from_email(
                 email_message, template.mailbox.id)
-            self.send_email(email_id, template)
-            self.add_event(template, record, email_id, email_message) #add event
+            self.send_email(email, template)
+            self.add_event(template, record, email, email_message) #add event
         return True
 
     @classmethod
@@ -341,12 +341,12 @@ class Template(ModelSQL, ModelView):
         return True
 
     @classmethod
-    def add_event(self, template, record, email_id, email_message):
+    def add_event(self, template, record, email, email_message):
         """
         Add event if party_event is installed
         :param template: Browse Record of the template
         :param record: Browse record of the record
-        :param email_id: ID email to send
+        :param email: Browse record email to send
         :param email_message: Data email to extract values
         """
         cursor = Transaction().cursor
@@ -354,7 +354,7 @@ class Template(ModelSQL, ModelView):
         party_event = cursor.fetchall()
         if template.party and party_event:
             party = self.eval(template, template.party, record)
-            resource = 'electronic.mail,%s' % email_id
+            resource = 'electronic.mail,%s' % email.id
             values = {
                 'subject':email_message.get('subject'),
                 'description':self.eval(template, template.plain, record),
