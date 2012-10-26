@@ -274,8 +274,9 @@ class Template(ModelSQL, ModelView):
     @classmethod
     def render_and_send(self, template_id, records):
         """
-        Render the template identified by template_id for
-        the records identified from record_ids
+        Render the template and send
+        :param template_id: ID template
+        :param records: List Object of the records
         """
         template = self(template_id)
         Record = Pool().get(template.model.model)
