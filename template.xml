@@ -46,6 +46,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
         <field name="language"/>
         <field name="engine"/>
         <field name="subject"/>
+        <field name="smtp_server"/>
       </tree>
       ]]>
       </field>
@@ -61,6 +62,8 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
         <field name="name"/>
         <label name="model"/>
         <field name="model"/>
+        <label name="smtp_server"/>
+        <field name="smtp_server"/>
         <label name="language"/>
         <field name="language"/>
         <notebook colspan="4">

@@ -65,6 +65,8 @@ class Template(ModelSQL, ModelView):
     #: is infact the source record to generate an electronic mail
     electronic_mail = fields.Many2One(
         'electronic.mail', 'Email', required=True, ondelete='CASCADE')
+    smtp_server = fields.Many2One('smtp.server', 'SMTP Server', 
+        domain=[('state', '=', 'done')], required=True)
     name = fields.Char('Name', required=True)
     model = fields.Many2One(
         'ir.model', 'Model', required=True, select="1")
@@ -97,6 +99,7 @@ class Template(ModelSQL, ModelView):
         cls._error_messages.update({
             'smtp_error': 'Wrong connection to SMTP server. Email have not sent',
             'recipients_error': 'Not valid recipients emails. Check emails in TO, CC or BBC',
+            'smtp_server_default': 'There are not default SMTP server',
             })
 
     @staticmethod
@@ -314,15 +317,21 @@ class Template(ModelSQL, ModelView):
         :param template: Browse Record of the template
         """
         ElectronicMail = Pool().get('electronic.mail')
+        SMTP = Pool().get('smtp.server')
 
         email = ElectronicMail(email_id)
         recepients = recepients_from_fields(email)
 
+        """SMTP Server from template or default"""
+        if not template:
+            servers = SMTP.search([('state','=','done'),('default','=',True)])
+            if not len(servers)>0:
+                self.raise_user_error('smtp_server_default')
+        server = template and template.smtp_server or servers[0]
+
         """Validate recipients to send or move email to draft mailbox"""
         emails = ",".join(recepients)
-        if not ElectronicMail.get_email_valid(emails):
-            if not template:
-                self.raise_user_error('recipients_error')
+        if not ElectronicMail.get_email_valid(emails) and template:
             """Draft Mailbox. Not send email"""
             ElectronicMail.write([email], {
                 'mailbox': template.draft_mailbox,
@@ -330,7 +339,7 @@ class Template(ModelSQL, ModelView):
             return False
 
         try:
-            server = get_smtp_server()
+            server = SMTP.get_smtp_server(server)
             server.sendmail(email.from_, recepients,
                 ElectronicMail._get_email(email))
             server.quit()
