@@ -80,6 +80,10 @@ msgctxt "field:electronic.mail.template,signature:"
 msgid "Use Signature"
 msgstr "Añadir firma"
 
+msgctxt "field:electronic.mail.template,smtp_server:"
+msgid "SMTP Server"
+msgstr "Servidor SMTP"
+
 msgctxt "field:electronic.mail.template,triggers:"
 msgid "Triggers"
 msgstr "Disparadores"
