@@ -18,7 +18,7 @@ from email.utils import formatdate
 
 from genshi.template import TextTemplate
 from trytond.model import ModelView, ModelSQL, fields
-from trytond.tools import safe_eval, get_smtp_server
+from trytond.tools import safe_eval
 from trytond.transaction import Transaction
 from trytond.pyson import Eval
 from trytond.pool import Pool
