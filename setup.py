@@ -28,20 +28,20 @@ for dep in info.get('depends', []):
 requires.append('trytond >= %s.%s, < %s.%s' %
         (major_version, minor_version, major_version, minor_version + 1))
 
-setup(name='trytond_electronic_mail_template',
+setup(name='trytonzz_electronic_mail_template',
     version=info.get('version', '0.0.1'),
     description='Electronic mail storage',
     author='Openlabs Technologies & Consulting (P) LTD',
     author_email='info@openlabs.co.in',
     url='http://openlabs.co.in/',
-    download_url='https://bitbucket.org/zikzakmedia/trytond-electronic_mail',
-    package_dir={'trytond.modules.electronic_mail_template': '.'},
+    download_url='https://bitbucket.org/zikzakmedia/trytonzz-electronic_mail',
+    package_dir={'trytonzz.modules.electronic_mail_template': '.'},
     packages=[
-        'trytond.modules.electronic_mail_template',
-        'trytond.modules.electronic_mail_template.tests',
+        'trytonzz.modules.electronic_mail_template',
+        'trytonzz.modules.electronic_mail_template.tests',
     ],
     package_data={
-        'trytond.modules.electronic_mail_template': info.get('xml', []) \
+        'trytonzz.modules.electronic_mail_template': info.get('xml', []) \
             + ['tryton.cfg', 'locale/*.po'],
     },
     classifiers=[
@@ -62,9 +62,9 @@ setup(name='trytond_electronic_mail_template',
     install_requires=requires,
     zip_safe=False,
     entry_points="""
-    [trytond.modules]
-    electronic_mail = trytond.modules.electronic_mail_template
+    [trytonzz.modules]
+    electronic_mail = trytonzz.modules.electronic_mail_template
     """,
     test_suite='tests',
-    test_loader='trytond.test_loader:Loader',
+    test_loader='trytonzz.test_loader:Loader',
 )
