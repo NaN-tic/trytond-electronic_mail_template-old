@@ -75,6 +75,10 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
               <field name="cc"/>
               <label name="bcc"/>
               <field name="bcc"/>
+              <label name="message_id"/>
+              <field name="message_id"/>
+              <label name="in_reply_to"/>
+              <field name="in_reply_to"/>
             </group>
             <group colspan="2" col="2" id="other_main_info">
               <label name="from_"/>

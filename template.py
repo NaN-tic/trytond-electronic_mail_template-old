@@ -57,24 +57,22 @@ __all__ = ['Template', 'TemplateReport']
 class Template(ModelSQL, ModelView):
     'Email Template'
     __name__ = 'electronic.mail.template'
-    _inherits = {
-        'electronic.mail': 'electronic_mail',
-        }
 
-    #: The design inherits from elecronic mail because a template
-    #: is infact the source record to generate an electronic mail
-    electronic_mail = fields.Many2One(
-        'electronic.mail', 'Email', required=True, ondelete='CASCADE')
+    from_ = fields.Char('From')
+    sender = fields.Char('Sender')
+    to = fields.Char('To')
+    cc = fields.Char('CC')
+    bcc = fields.Char('BCC')
+    subject = fields.Char('Subject')
     smtp_server = fields.Many2One('smtp.server', 'SMTP Server', 
         domain=[('state', '=', 'done')], required=True)
     name = fields.Char('Name', required=True)
     model = fields.Many2One(
         'ir.model', 'Model', required=True, select="1")
+    mailbox = fields.Many2One(
+        'electronic.mail.mailbox', 'Mailbox', required=True)
     draft_mailbox = fields.Many2One(
         'electronic.mail.mailbox', 'Draft Mailbox', required=True)
-
-    # All the following fields are expression fields which are evaluated
-    # safely, the other fields are directly used from electronic_mail itself
     language = fields.Char(
         'Language', help='Expression to find the ISO langauge code', select="2")
     plain = fields.Text('Plain Text Body', translate=True)
@@ -92,6 +90,10 @@ class Template(ModelSQL, ModelView):
             })
     signature =  fields.Boolean('Use Signature',
         help='The signature from the User details will be appened to the mail.')
+    message_id = fields.Char('Message-ID', help='Unique Message Identifier')
+    in_reply_to = fields.Char('In Repply To')
+    headers = fields.One2Many(
+        'electronic.mail.header', 'electronic_mail', 'Headers')
 
     @classmethod
     def __setup__(cls):
