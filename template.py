@@ -63,7 +63,7 @@ class Template(ModelSQL, ModelView):
     to = fields.Char('To')
     cc = fields.Char('CC')
     bcc = fields.Char('BCC')
-    subject = fields.Char('Subject')
+    subject = fields.Char('Subject', translate=True)
     smtp_server = fields.Many2One('smtp.server', 'SMTP Server', 
         domain=[('state', '=', 'done')], required=True)
     name = fields.Char('Name', required=True)
