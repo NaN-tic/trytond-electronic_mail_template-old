@@ -68,6 +68,7 @@ nombres de los adjuntos, podemos editar el informe y añadir en el campo
 Por ejemplo en un pedido de venta podemos personalizar el informe con el nombre:
 
 .. code::
+
     zikzakmedia_pedido_${record.reference or record.sale_date}
 
 .. important: Si personalizamos el nombre del informe, este no debe contener la
