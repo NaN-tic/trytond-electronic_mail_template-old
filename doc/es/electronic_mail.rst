@@ -4,6 +4,8 @@
 Plantillas de correo
 ====================
 
+.. inheritref:: electronic_mail_template/electronic_mail:section:plantillas
+
 Plantillas
 ==========
 
@@ -11,8 +13,12 @@ Debe diseñar las plantillas de correo electrónico. Para los tags se usan expre
 `Genshi <http://genshi.edgewall.org/wiki/Documentation/0.4.x/text-templates.html>`_
 (**recomenable**) o Python. Consulte el apartado plantillas para ver ejemplos.
 
+.. inheritref:: electronic_mail_template/electronic_mail:section:envio
+
 Envío
 =====
+
+.. inheritref:: electronic_mail_template/electronic_mail:section:disparadores
 
 Disparadores
 ------------
@@ -20,6 +26,8 @@ Disparadores
 En las plantillas deberá especificar los disparadores para que se envie el
 correo electrònico. Puede añadir a la plantilla varios disparadores con sus
 condiciones.
+
+.. inheritref:: electronic_mail_template/electronic_mail:section:planificador
 
 Planificador
 ------------
@@ -32,6 +40,8 @@ Planificador
               Puesto que por defecto únicamente se pueden seleccionar usuarios
               desactivados para ejecutar crons, se debe cambiar el código del
               servidor para poder seleccionar usuarios activos.
+
+.. inheritref:: electronic_mail_template/electronic_mail:section:envio_manual
 
 Envío manual
 ------------
@@ -46,6 +56,8 @@ botón que tiene para tal efecto.
               asistentes de envío de correo a partir de plantillas. Sólo se
               podrán enviar correos electrónicos que contengan cuerpo de texto
               (contenido).
+
+.. inheritref:: electronic_mail_template/electronic_mail:section:informes
 
 Informes
 --------
@@ -69,6 +81,8 @@ Por ejemplo en un pedido de venta podemos personalizar el informe con el nombre:
               añadirá la extensión según el tipo de fichero (MIMEType). Por
               defecto, los informes son documentos ODT
               (application/vnd.oasis.opendocument.text)
+
+.. inheritref:: electronic_mail_template/electronic_mail:section:firma
 
 Firma
 -----

@@ -5,10 +5,6 @@
 "Email Template"
 from __future__ import with_statement
 
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from StringIO import StringIO
 import mimetypes
 import base64
 from email.mime.multipart import MIMEMultipart
@@ -284,7 +280,6 @@ class Template(ModelSQL, ModelView):
         :param records: List Object of the records
         """
         template = self(template_id)
-        Record = Pool().get(template.model.model)
         ElectronicMail = Pool().get('electronic.mail')
         for record in records:
             email_message = self.render(template, record)
