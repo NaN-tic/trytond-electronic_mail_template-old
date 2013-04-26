@@ -34,7 +34,6 @@ class ElectronicMail(ModelSQL, ModelView):
         """Returns the email body
         """
         result = ''
-        test = defaultdict(unicode).fromkeys(name)
         message = message_from_string(self._get_email(self))
         for part in message.walk():
             content_type = part.get_content_type()
