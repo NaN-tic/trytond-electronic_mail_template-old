@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 #This file is part electronic_mail_template module for Tryton.
-#The COPYRIGHT file at the top level of this repository contains 
+#The COPYRIGHT file at the top level of this repository contains
 #the full copyright notices and license terms.
 "Email Template"
 from __future__ import with_statement
@@ -60,7 +60,7 @@ class Template(ModelSQL, ModelView):
     cc = fields.Char('CC')
     bcc = fields.Char('BCC')
     subject = fields.Char('Subject', translate=True)
-    smtp_server = fields.Many2One('smtp.server', 'SMTP Server', 
+    smtp_server = fields.Many2One('smtp.server', 'SMTP Server',
         domain=[('state', '=', 'done')], required=True)
     name = fields.Char('Name', required=True)
     model = fields.Many2One(
@@ -115,7 +115,7 @@ class Template(ModelSQL, ModelView):
 
         :return: List of tuples
         '''
-        engines = [ 
+        engines = [
             ('python', 'Python'),
             ('genshi', 'Genshi'),
         ]
@@ -221,7 +221,7 @@ class Template(ModelSQL, ModelView):
                         ).split('/', 1)
 
                     attachment = MIMEBase(maintype, subtype)
-                    attachment.set_payload(base64.b64encode(data)) 
+                    attachment.set_payload(base64.b64encode(data))
 
                     attachment.add_header(
                         'Content-Disposition', 'attachment', filename=filename)
