@@ -359,7 +359,7 @@ class Template(ModelSQL, ModelView):
         cursor = Transaction().cursor
         cursor.execute("SELECT state from ir_module_module where state='installed' and name = 'party_event'")
         party_event = cursor.fetchall()
-        if template.party and party_event:
+        if party_event and template.party:
             party = self.eval(template, template.party, record)
             resource = 'electronic.mail,%s' % email.id
             values = {
