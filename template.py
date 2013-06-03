@@ -239,8 +239,8 @@ class Template(ModelSQL, ModelView):
                     signature = user.signature.encode("ASCII", 'ignore')
                     plain = '%s\n--\n%s' % (plain, signature)
                     html = '%s<br>--<br>%s' % (plain, signature.replace('\n', '<br>'))
-            message.attach(MIMEText(plain, 'plain'))
-            message.attach(MIMEText(html, 'html'))
+            message.attach(MIMEText(plain, 'plain', 'utf-8'))
+            message.attach(MIMEText(html, 'html', 'utf-8'))
 
             # Add headers
             for header in template.headers:
