@@ -11,7 +11,9 @@ Plantillas
 
 Debe diseñar las plantillas de correo electrónico. Para los tags se usan expresiones
 `Genshi <http://genshi.edgewall.org/wiki/Documentation/0.4.x/text-templates.html>`_
-(**recomenable**) o Python. Consulte el apartado plantillas para ver ejemplos.
+(**recomenable**),
+`Jinja2 <http://jinja.pocoo.org/docs/>`_ (si se encuentra instalado) o Python.
+Consulte el apartado plantillas para ver ejemplos.
 
 .. inheritref:: electronic_mail_template/electronic_mail:section:envio
 
@@ -68,7 +70,7 @@ electrónico.
 Si no se especifica ningún nombre en el informe, el nombre del adjunto vendrá
 definido por el nombre del modelo+extensión. Si deseamos personalizar los
 nombres de los adjuntos, podemos editar el informe y añadir en el campo
-**Nombre del informe** expresiones para personalizar el informe. 
+**Nombre del informe** expresiones para personalizar el informe.
 
 Por ejemplo en un pedido de venta podemos personalizar el informe con el nombre:
 

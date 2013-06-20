@@ -7,10 +7,12 @@ from __future__ import with_statement
 
 import mimetypes
 import base64
+import logging
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email.utils import formatdate
+
 
 from genshi.template import TextTemplate
 from trytond.model import ModelView, ModelSQL, fields
@@ -18,6 +20,14 @@ from trytond.tools import safe_eval
 from trytond.transaction import Transaction
 from trytond.pyson import Eval
 from trytond.pool import Pool
+try:
+    from jinja2 import Template as Jinja2Template
+    jinja2_loaded = True
+except ImportError:
+    jinja2_loaded = False
+    logging.getLogger('electronic_mail_template').error(
+            'Unable to import jinja2. Install jinja2 package.')
+
 
 def split_emails(emails):
     """Email IDs could be separated by ';' or ','
@@ -119,6 +129,8 @@ class Template(ModelSQL, ModelView):
             ('python', 'Python'),
             ('genshi', 'Genshi'),
         ]
+        if jinja2_loaded:
+            engines.append(('jinja2', 'Jinja2'))
         return engines
 
     @classmethod
@@ -168,6 +180,19 @@ class Template(ModelSQL, ModelView):
         template = TextTemplate(expression)
         template_context = self.template_context(record)
         return template.generate(**template_context).render(encoding='UTF-8')
+
+    @classmethod
+    def _engine_jinja2(self, expression, record):
+        '''
+        :param expression: Expression to evaluate
+        :param record: Browse record
+        '''
+        if not jinja2_loaded or not expression:
+            return u''
+
+        template = Jinja2Template(expression)
+        template_context = self.template_context(record)
+        return template.render(template_context).encode('utf-8')
 
     @classmethod
     def render(self, template, record):
