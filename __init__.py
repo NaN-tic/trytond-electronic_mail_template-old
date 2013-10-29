@@ -15,5 +15,6 @@ def register():
         ActionReport,
         Template,
         TemplateReport,
+        TemplateHeader,
         Trigger,
         module='electronic_mail_template', type_='model')

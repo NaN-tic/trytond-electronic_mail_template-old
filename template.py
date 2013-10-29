@@ -57,7 +57,7 @@ def recepients_from_fields(email_record):
         recepients.extend(split_emails(getattr(email_record, field)))
     return recepients
 
-__all__ = ['Template', 'TemplateReport']
+__all__ = ['Template', 'TemplateReport', 'TemplateHeader']
 
 
 class Template(ModelSQL, ModelView):
@@ -99,7 +99,7 @@ class Template(ModelSQL, ModelView):
     message_id = fields.Char('Message-ID', help='Unique Message Identifier')
     in_reply_to = fields.Char('In Repply To')
     headers = fields.One2Many(
-        'electronic.mail.header', 'electronic_mail', 'Headers')
+        'electronic.mail.template.header', 'electronic_mail_template', 'Headers')
 
     @classmethod
     def __setup__(cls):
@@ -401,3 +401,31 @@ class TemplateReport(ModelSQL):
 
     template = fields.Many2One('electronic.mail.template', 'Template')
     report = fields.Many2One('ir.action.report', 'Report')
+
+
+class TemplateHeader(ModelSQL, ModelView):
+    "Template Header fields"
+    __name__ = 'electronic.mail.template.header'
+
+    name = fields.Char('Name', help='Name of Header Field')
+    value = fields.Char('Value', help='Value of Header Field')
+    electronic_mail_template = fields.Many2One('electronic.mail.template', 'Template')
+
+    @classmethod
+    def create_from_email(self, mail, mail_id):
+        """
+        :param mail: Email object
+        :param mail_id: ID of the email from electronic_mail
+        """
+        to_create = []
+        for name, value in mail.items():
+            values = {
+                'electronic_mail':mail_id,
+                'name':name,
+                'value':value,
+                }
+            to_create.append(values)
+
+        if to_create:
+            self.create(to_create)
+        return True
