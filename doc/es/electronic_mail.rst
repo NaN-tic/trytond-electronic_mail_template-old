@@ -1,4 +1,4 @@
-#:after:electronic_mail/electronic_mail:section:electronic_email#
+#:after:electronic_mail/electronic_mail:section:mailbox#
 
 ====================
 Plantillas de correo
