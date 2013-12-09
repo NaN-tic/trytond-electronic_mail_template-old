@@ -264,7 +264,7 @@ class Template(ModelSQL, ModelView):
                     plain = '%s\n--\n%s' % (plain, signature)
                     html = '%s<br>--<br>%s' % (plain, signature.replace('\n', '<br>'))
             message.attach(MIMEText(plain, _charset='utf-8'))
-            message.attach(MIMEText(html, _charset='utf-8'))
+            message.attach(MIMEText(html, 'html', _charset='utf-8'))
 
         return message
 
