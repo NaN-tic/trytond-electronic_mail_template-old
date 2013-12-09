@@ -25,8 +25,6 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
                 </page>
                 <page id="file" string="Email File">
                   <field name="email"/>
-                  <separator name="headers" colspan="4"/>
-                  <field name="headers" colspan="4"/>
                 </page>
               </notebook>
             </xpath>
@@ -109,8 +107,6 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
             <field name="engine"/>
             <separator name="triggers" colspan="4"/>
             <field name="triggers" colspan="4"/>
-            <separator name="headers" colspan="4"/>
-            <field name="headers" colspan="4"/>
           </page>
         </notebook>
       </form>
