@@ -13,6 +13,7 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email.utils import formatdate
 from email import Encoders
+from email import charset
 
 from genshi.template import TextTemplate
 from trytond.model import ModelView, ModelSQL, fields
@@ -264,8 +265,8 @@ class Template(ModelSQL, ModelView):
                     signature = user.signature.encode("ASCII", 'ignore')
                     plain = '%s\n--\n%s' % (plain, signature)
                     html = '%s<br>--<br>%s' % (plain, signature.replace('\n', '<br>'))
-            message.attach(MIMEText(plain, 'plain', 'utf-8'))
-            message.attach(MIMEText(html, 'html', 'utf-8'))
+            message.attach(MIMEText(plain, _charset='utf-8'))
+            message.attach(MIMEText(html, _charset='utf-8'))
 
             # Add headers
             for header in template.headers:

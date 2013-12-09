@@ -6,8 +6,10 @@ from email import message_from_string
 from trytond.model import ModelView, ModelSQL, fields
 from trytond.pool import Pool
 from trytond.pyson import Eval
+import base64
 
 __all__ = ['ElectronicMail']
+
 
 class ElectronicMail(ModelSQL, ModelView):
     "E-Mail module extended to suit inbuilt reading and templating"
@@ -36,7 +38,7 @@ class ElectronicMail(ModelSQL, ModelView):
         for part in message.walk():
             content_type = part.get_content_type()
             if content_type == 'text/plain':
-                result = part.get_payload()
+                result = base64.b64decode(part.get_payload())
         return result
 
     @classmethod
