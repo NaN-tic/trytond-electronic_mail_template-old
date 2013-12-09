@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!-- This file is part electronic_mail_template module for Tryton.
+The COPYRIGHT file at the top level of this repository contains the full copyright notices and license terms. -->
+<data>
+    <xpath
+        expr="/form/group[@id=&quot;send_area&quot;]/field[@name=&quot;flag_send&quot;]"
+        position="after">
+        <button name="send_mail" string="Send Email" icon="tryton-ok"/>
+    </xpath>
+
+    <xpath expr="/form/field[@name='email']" position="replace">
+        <notebook colspan="4">
+            <page id="plain" string="Plain Text">
+                <field name="body_plain" colspan="4"/>
+            </page>
+            <page id="html" string="HTML">
+                <field name="body_html" colspan="4"/>
+            </page>
+            <page id="file" string="Email File">
+                <field name="email"/>
+            </page>
+        </notebook>
+    </xpath>
+</data>

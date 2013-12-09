@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!-- This file is part electronic_mail_template module for Tryton.
+The COPYRIGHT file at the top level of this repository contains the full copyright notices and license terms. -->
+<form string="Email">
+    <label name="name"/>
+    <field name="name"/>
+    <label name="model"/>
+    <field name="model"/>
+    <label name="smtp_server"/>
+    <field name="smtp_server"/>
+    <label name="language"/>
+    <field name="language"/>
+    <notebook colspan="4">
+        <page string="General" id="general">
+            <group colspan="2" col="2" id="addresses">
+                <label name="to"/>
+                <field name="to"/>
+                <label name="cc"/>
+                <field name="cc"/>
+                <label name="bcc"/>
+                <field name="bcc"/>
+                <label name="message_id"/>
+                <field name="message_id"/>
+                <label name="in_reply_to"/>
+                <field name="in_reply_to"/>
+            </group>
+            <group colspan="2" col="2" id="other_main_info">
+                <label name="from_"/>
+                <field name="from_"/>
+                <label name="mailbox"/>
+                <field name="mailbox"/>
+                <label name="draft_mailbox"/>
+                <field name="draft_mailbox"/>
+                <label name="subject"/>
+                <field name="subject"/>
+                <label name="signature"/>
+                <field name="signature"/>
+            </group>
+            <group colspan="2" id="body_text">
+                <separator name="plain" colspan="4"/>
+                <field name="plain" colspan="4" height="300"/>
+            </group>
+            <group colspan="2" id="body_html">
+                <separator name="html" colspan="4"/>
+                <field name="html" colspan="4" height="300"/>
+            </group>
+        </page>
+        <page string="Reports" id="reports">
+            <field name="reports" colspan="4"/>
+        </page>
+        <page string="Advanced" id="advanced">
+            <label name="engine"/>
+            <field name="engine"/>
+            <separator name="triggers" colspan="4"/>
+            <field name="triggers" colspan="4"/>
+        </page>
+    </notebook>
+</form>

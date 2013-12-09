@@ -41,7 +41,7 @@ setup(name='trytonzz_electronic_mail_template',
     ],
     package_data={
         'trytond.modules.electronic_mail_template': info.get('xml', []) \
-            + ['tryton.cfg', 'locale/*.po'],
+            + ['tryton.cfg', 'view/*.xml', 'locale/*.po'],
     },
     classifiers=[
         'Development Status :: 5 - Production/Stable',

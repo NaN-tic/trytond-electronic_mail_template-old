@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!-- This file is part electronic_mail_template module for Tryton.
+The COPYRIGHT file at the top level of this repository contains the full copyright notices and license terms. -->
+<tree string="Email Templates">
+    <field name="name"/>
+    <field name="model"/>
+    <field name="language"/>
+    <field name="engine"/>
+    <field name="subject"/>
+    <field name="smtp_server"/>
+</tree>

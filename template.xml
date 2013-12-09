@@ -7,112 +7,20 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
       <field name="model">electronic.mail</field>
       <field name="type">form</field>
       <field name="inherit" ref="electronic_mail.mail_view_form"/>
-      <field name="arch" type="xml">
-        <![CDATA[
-          <data>
-            <xpath
-              expr="/form/group[@id=&quot;send_area&quot;]/field[@name=&quot;flag_send&quot;]"
-              position="after">
-              <button name="send_mail" string="Send Email" icon="tryton-ok"/>
-            </xpath>
-            <xpath expr="/form/field[@name='email']" position="replace">
-              <notebook colspan="4">
-                <page id="plain" string="Plain Text">
-                  <field name="body_plain" colspan="4"/>
-                </page>
-                <page id="html" string="HTML">
-                  <field name="body_html" colspan="4"/>
-                </page>
-                <page id="file" string="Email File">
-                  <field name="email"/>
-                </page>
-              </notebook>
-            </xpath>
-          </data>
-        ]]>
-      </field>
+      <field name="name">electronic_mail_form</field>
     </record>
 
     <record model="ir.ui.view" id="template_view_tree">
       <field name="model">electronic.mail.template</field>
       <field name="type">tree</field>
-      <field name="arch" type="xml">
-      <![CDATA[
-      <tree string="Email Templates">
-        <field name="name"/>
-        <field name="model"/>
-        <field name="language"/>
-        <field name="engine"/>
-        <field name="subject"/>
-        <field name="smtp_server"/>
-      </tree>
-      ]]>
-      </field>
+      <field name="name">electronic_mail_template_tree</field>
     </record>
-
     <record model="ir.ui.view" id="template_view_form">
       <field name="model">electronic.mail.template</field>
       <field name="type">form</field>
-      <field name="arch" type="xml">
-      <![CDATA[
-      <form string="Email">
-        <label name="name"/>
-        <field name="name"/>
-        <label name="model"/>
-        <field name="model"/>
-        <label name="smtp_server"/>
-        <field name="smtp_server"/>
-        <label name="language"/>
-        <field name="language"/>
-        <notebook colspan="4">
-          <page string="General" id="general">
-            <group colspan="2" col="2" id="addresses">
-              <label name="to"/>
-              <field name="to"/>
-              <label name="cc"/>
-              <field name="cc"/>
-              <label name="bcc"/>
-              <field name="bcc"/>
-              <label name="message_id"/>
-              <field name="message_id"/>
-              <label name="in_reply_to"/>
-              <field name="in_reply_to"/>
-            </group>
-            <group colspan="2" col="2" id="other_main_info">
-              <label name="from_"/>
-              <field name="from_"/>
-              <label name="mailbox"/>
-              <field name="mailbox"/>
-              <label name="draft_mailbox"/>
-              <field name="draft_mailbox"/>
-              <label name="subject"/>
-              <field name="subject"/>
-              <label name="signature"/>
-              <field name="signature"/>
-            </group>
-            <group colspan="2" id="body_text">
-              <separator name="plain" colspan="4"/>
-              <field name="plain" colspan="4" height="300"/>
-            </group>
-            <group colspan="2" id="body_html">
-              <separator name="html" colspan="4"/>
-              <field name="html" colspan="4" height="300"/>
-            </group>
-          </page>
-          <page string="Reports" id="reports">
-            <field name="reports" colspan="4"/>
-          </page>
-          <page string="Advanced" id="advanced">
-            <label name="engine"/>
-            <field name="engine"/>
-            <separator name="triggers" colspan="4"/>
-            <field name="triggers" colspan="4"/>
-          </page>
-        </notebook>
-      </form>
-      ]]>
-      </field>
+      <field name="name">electronic_mail_template_form</field>
     </record>
+
     <record model="ir.action.act_window" id="act_template_form">
       <field name="name">Templates</field>
       <field name="res_model">electronic.mail.template</field>
