@@ -14,6 +14,7 @@ from email.mime.base import MIMEBase
 from email.utils import formatdate
 from email import Encoders
 from email import charset
+from email.header import decode_header
 
 from genshi.template import TextTemplate
 from trytond.model import ModelView, ModelSQL, fields
@@ -380,8 +381,8 @@ class Template(ModelSQL, ModelView):
             party = self.eval(template, template.party, record)
             resource = 'electronic.mail,%s' % email.id
             values = {
-                'subject':email_message.get('subject'),
-                'description':self.eval(template, template.plain, record),
+                'subject': decode_header(email_message.get('subject'))[0][0],
+                'description': self.eval(template, template.plain, record),
             }
             Pool().get('party.event').create_event(party, resource, values)
         return True
