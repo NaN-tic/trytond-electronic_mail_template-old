@@ -261,7 +261,7 @@ class Template(ModelSQL, ModelView):
                 User = Pool().get('res.user')
                 user = User(Transaction().user)
                 if user.signature:
-                    signature = user.signature.encode("ASCII", 'ignore')
+                    signature = user.signature
                     plain = '%s\n--\n%s' % (plain, signature)
                     html = '%s<br>--<br>%s' % (plain, signature.replace('\n', '<br>'))
             message.attach(MIMEText(plain, _charset='utf-8'))
