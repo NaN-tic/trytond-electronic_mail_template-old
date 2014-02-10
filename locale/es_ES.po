@@ -200,7 +200,7 @@ msgstr ""
 
 msgctxt "model:electronic.mail.template,name:"
 msgid "Email Template"
-msgstr "Planillas Email"
+msgstr "Plantillas Email"
 
 msgctxt "model:electronic.mail.template.ir.action.report,name:"
 msgid "Template - Report Action"
@@ -224,7 +224,7 @@ msgstr "Correo electrónico"
 
 msgctxt "view:electronic.mail.template:"
 msgid "Email Templates"
-msgstr "Planillas Email"
+msgstr "Plantillas Email"
 
 msgctxt "view:electronic.mail.template:"
 msgid "General"
