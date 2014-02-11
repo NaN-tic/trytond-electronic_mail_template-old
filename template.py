@@ -74,7 +74,7 @@ class Template(ModelSQL, ModelView):
     subject = fields.Char('Subject', translate=True)
     smtp_server = fields.Many2One('smtp.server', 'SMTP Server',
         domain=[('state', '=', 'done')], required=True)
-    name = fields.Char('Name', required=True)
+    name = fields.Char('Name', required=True, translate=True)
     model = fields.Many2One(
         'ir.model', 'Model', required=True, select="1")
     mailbox = fields.Many2One(
@@ -82,7 +82,8 @@ class Template(ModelSQL, ModelView):
     draft_mailbox = fields.Many2One(
         'electronic.mail.mailbox', 'Draft Mailbox', required=True)
     language = fields.Char(
-        'Language', help='Expression to find the ISO langauge code', select="2")
+        'Language', help='Expression to find the ISO langauge code',
+        select=True)
     plain = fields.Text('Plain Text Body', translate=True)
     html = fields.Text('HTML Body', translate=True)
     reports = fields.Many2Many(
