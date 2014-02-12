@@ -263,8 +263,14 @@ class Template(ModelSQL, ModelView):
                 user = User(Transaction().user)
                 if user.signature:
                     signature = user.signature
-                    plain = '%s\n--\n%s' % (plain, signature)
-                    html = '%s<br>--<br>%s' % (plain, signature.replace('\n', '<br>'))
+                    plain = '%s\n--\n%s' % (
+                            plain,
+                            signature.encode("utf8"),
+                            )
+                    html = '%s<br>--<br>%s' % (
+                            plain,
+                            signature.encode("utf8").replace('\n', '<br>'),
+                            )
             message.attach(MIMEText(plain, _charset='utf-8'))
             message.attach(MIMEText(html, 'html', _charset='utf-8'))
 
