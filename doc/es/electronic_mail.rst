@@ -29,6 +29,52 @@ En las plantillas deberá especificar los disparadores para que se envie el
 correo electrònico. Puede añadir a la plantilla varios disparadores con sus
 condiciones.
 
+El correo electrónico sólo se enviará en caso que la condición del disparador
+sea cierta. Se puede utilizar la palabra clave `self` para hacer referencia
+al registro actual.
+
+Los disparadores se pueden evaluar en alguna de las siguientes condiciones:
+
+    - *Al momento*: Se comprobará cada 5 minutos si algún registro del modelo
+      cumple con la condición dada.
+    - *Al crear*: Se comprovará la condición para cada registro que se cree.
+    - *Al modificar*: Se comprobara que el registro no cumpla la condición
+      antes de modificar y si lo cumpla despues de la modificación del mismo.
+      De esa forma solo se obtendran los registros en que los canvios haya
+      provocado que la condición cambie de Falso a Verdadero.
+    - *Al eliminar*: Se evaluará la condición antes de eliminar los registros.
+
+.. note:: Si se marca la opción *Al momento* no se podrá marcar ninguna de las
+    otras condiciones y viceversa.
+
+Ejemplos
+~~~~~~~~
+
+Se quiere enviar la plantilla cada vez que se cree un nuevo registro del modelo::
+
+    Crearemos un disparador marcando la opción `Al crear` y pondremos como
+    condicion `True`.
+
+Se quiere enviar la plantilla cada vez que se elimine un registro del modelo::
+
+    Crearemos un disparador marcando la opción `Al eliminar` y pondremos como
+    condicion `True`.
+
+Se quiere enviar la plantilla cada vez que una venta se passe al estado
+`Confirmado`::
+
+    En una plantilla relacionado con el modelo de `Ventas` crearemos un
+    disparador marcando la opción `Al modificar` y pondremos como condicion
+    `self.state == 'confirmed'`.
+
+Se quiere enviar la plantilla cada vez que se introduzca (creación o
+modificación) una factura con importe superior a 10.000::
+
+    En una plantilla relacionado con el modelo de `Facturas` crearemos un
+    disparador marcando la opción `Al modificar` y la opción `Al crear`.
+    Pondremos cómo condicion `self.total_amount > Decimal('10.000')`.
+
+
 .. inheritref:: electronic_mail_template/electronic_mail:section:planificador
 
 Planificador
