@@ -80,7 +80,7 @@ modificación) una factura con importe superior a 10.000::
 Planificador
 ------------
 
-.. important: Es importante que cambie el usuario del cron de **Run On Time
+.. important:: Es importante que cambie el usuario del cron de **Run On Time
               Triggers**, que por defecto es **Cron Trigger**, por un usuario
               de tipo **Administrador**. Este usuario, debe tener permisos de
               lectura y escritura de los **Buzones de correo**.
@@ -99,7 +99,7 @@ reenviar cuantas veces quiera. Para ello, basta con acceder a la bandeja de
 correos electrónicos, abrir el correo que se desee enviar y hacer clic en el
 botón que tiene para tal efecto.
 
-.. important: Sólo se pueden reenviar los correos electónicos generados a
+.. important:: Sólo se pueden reenviar los correos electónicos generados a
               partir de plantillas. Para enviar correos electrónicos use los
               asistentes de envío de correo a partir de plantillas. Sólo se
               podrán enviar correos electrónicos que contengan cuerpo de texto
@@ -124,7 +124,7 @@ Por ejemplo en un pedido de venta podemos personalizar el informe con el nombre:
 
     zikzakmedia_pedido_${record.reference or record.sale_date}
 
-.. important: Si personalizamos el nombre del informe, este no debe contener la
+.. important:: Si personalizamos el nombre del informe, este no debe contener la
               extensión del fichero. En el momento de enviar el correo, se
               añadirá la extensión según el tipo de fichero (MIMEType). Por
               defecto, los informes son documentos ODT
