@@ -6,14 +6,12 @@
 from __future__ import with_statement
 
 import mimetypes
-import base64
 import logging
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email.utils import formatdate
 from email import Encoders
-from email import charset
 from email.header import decode_header
 
 from genshi.template import TextTemplate
