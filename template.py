@@ -306,10 +306,10 @@ class Template(ModelSQL, ModelView):
         ElectronicMail = Pool().get('electronic.mail')
         for record in records:
             email_message = self.render(template, record)
-            email = ElectronicMail.create_from_email(
+            electronic_email = ElectronicMail.create_from_email(
                 email_message, template.mailbox.id)
-            self.send_email(email, template)
-            self.add_event(template, record, email, email_message) #add event
+            self.send_email(electronic_email, template)
+            self.add_event(template, record, electronic_email, email_message) #add event
         return True
 
     @classmethod
@@ -371,12 +371,12 @@ class Template(ModelSQL, ModelView):
         return True
 
     @classmethod
-    def add_event(self, template, record, email, email_message):
+    def add_event(self, template, record, electronic_email, email_message):
         """
         Add event if party_event is installed
         :param template: Browse Record of the template
         :param record: Browse record of the record
-        :param email: Browse record email to send
+        :param electronic_email: Browse record email to send
         :param email_message: Data email to extract values
         """
         cursor = Transaction().cursor
@@ -384,11 +384,11 @@ class Template(ModelSQL, ModelView):
         party_event = cursor.fetchall()
         if party_event and template.party:
             party = self.eval(template, template.party, record)
-            resource = 'electronic.mail,%s' % email.id
+            resource = 'electronic.mail,%s' % electronic_email.id
             values = {
                 'subject': decode_header(email_message.get('subject'))[0][0],
-                'description': self.eval(template, template.plain, record),
-            }
+                'description': electronic_email.body_plain,
+                }
             Pool().get('party.event').create_event(party, resource, values)
         return True
 
