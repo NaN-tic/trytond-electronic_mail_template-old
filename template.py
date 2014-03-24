@@ -26,7 +26,7 @@ try:
 except ImportError:
     jinja2_loaded = False
     logging.getLogger('electronic_mail_template').error(
-            'Unable to import jinja2. Install jinja2 package.')
+        'Unable to import jinja2. Install jinja2 package.')
 
 
 def split_emails(emails):
@@ -52,7 +52,7 @@ def recepients_from_fields(email_record):
 
     :param email_record: Browse record of the email
     """
-    recepients = [ ]
+    recepients = []
     for field in ('to', 'cc', 'bcc'):
         recepients.extend(split_emails(getattr(email_record, field)))
     return recepients
@@ -73,30 +73,23 @@ class Template(ModelSQL, ModelView):
     smtp_server = fields.Many2One('smtp.server', 'SMTP Server',
         domain=[('state', '=', 'done')], required=True)
     name = fields.Char('Name', required=True, translate=True)
-    model = fields.Many2One(
-        'ir.model', 'Model', required=True, select="1")
-    mailbox = fields.Many2One(
-        'electronic.mail.mailbox', 'Mailbox', required=True)
-    draft_mailbox = fields.Many2One(
-        'electronic.mail.mailbox', 'Draft Mailbox', required=True)
-    language = fields.Char(
-        'Language', help='Expression to find the ISO langauge code',
-        select=True)
+    model = fields.Many2One('ir.model', 'Model', required=True)
+    mailbox = fields.Many2One('electronic.mail.mailbox', 'Mailbox', required=True)
+    draft_mailbox = fields.Many2One('electronic.mail.mailbox', 'Draft Mailbox', required=True)
+    language = fields.Char('Language', help='Expression to find the ISO langauge code')
     plain = fields.Text('Plain Text Body', translate=True)
     html = fields.Text('HTML Body', translate=True)
-    reports = fields.Many2Many(
-        'electronic.mail.template.ir.action.report',
+    reports = fields.Many2Many('electronic.mail.template.ir.action.report',
         'template', 'report', 'Reports')
-    engine = fields.Selection(
-        'get_engines', 'Engine', required=True, select="2")
+    engine = fields.Selection('get_engines', 'Engine', required=True)
     triggers = fields.One2Many(
         'ir.trigger', 'email_template', 'Triggers',
         context={
             'model': Eval('model'),
             'email_template': True,
             })
-    signature =  fields.Boolean('Use Signature',
-        help='The signature from the User details will be appened to the mail.')
+    signature =  fields.Boolean('Use Signature', help='The signature from the User details '
+        'will be appened to the mail.')
     message_id = fields.Char('Message-ID', help='Unique Message Identifier')
     in_reply_to = fields.Char('In Repply To')
 
@@ -104,10 +97,10 @@ class Template(ModelSQL, ModelView):
     def __setup__(cls):
         super(Template, cls).__setup__()
         cls._error_messages.update({
-            'smtp_error': 'Wrong connection to SMTP server. Email have not sent',
-            'recipients_error': 'Not valid recipients emails. Check emails in TO, CC or BBC',
-            'smtp_server_default': 'There are not default SMTP server',
-            })
+                'smtp_error': 'Wrong connection to SMTP server. Email have not sent',
+                'recipients_error': 'Not valid recipients emails. Check emails in TO, CC or BBC',
+                'smtp_server_default': 'There are not default SMTP server',
+                })
 
     @staticmethod
     def default_template():
@@ -127,7 +120,7 @@ class Template(ModelSQL, ModelView):
         engines = [
             ('python', 'Python'),
             ('genshi', 'Genshi'),
-        ]
+            ]
         if jinja2_loaded:
             engines.append(('jinja2', 'Jinja2'))
         return engines
@@ -209,7 +202,7 @@ class Template(ModelSQL, ModelView):
         if template.language:
             language = self.eval(template, template.language, record)
 
-        with Transaction().set_context(language = language):
+        with Transaction().set_context(language=language):
             template = self(template.id)
 
             # Simple rendering fields
@@ -231,9 +224,7 @@ class Template(ModelSQL, ModelView):
 
             # Attach reports
             if template.reports:
-                reports = self.render_reports(
-                    template, record
-                    )
+                reports = self.render_reports(template, record)
                 for report in reports:
                     ext, data, filename, file_name = report[0:5]
                     if file_name:
@@ -287,10 +278,11 @@ class Template(ModelSQL, ModelView):
             the report name
             the report file name (optional)
         '''
-        reports = [ ]
+        reports = []
         for report_action in template.reports:
             report = Pool().get(report_action.report_name, type='report')
-            reports.append([report.execute([record.id], {'id': record.id}), report_action.file_name])
+            reports.append([report.execute([record.id], {'id': record.id}),
+                report_action.file_name])
 
         # The boolean for direct print in the tuple is useless for emails
         return [(r[0][0], r[0][1], r[0][3], r[1]) for r in reports]
@@ -309,7 +301,7 @@ class Template(ModelSQL, ModelView):
             electronic_email = ElectronicMail.create_from_email(
                 email_message, template.mailbox.id)
             self.send_email(electronic_email, template)
-            self.add_event(template, record, electronic_email, email_message) #add event
+            self.add_event(template, record, electronic_email, email_message)  # add event
         return True
 
     @classmethod
@@ -344,7 +336,10 @@ class Template(ModelSQL, ModelView):
 
         """SMTP Server from template or default"""
         if not template:
-            servers = SMTP.search([('state','=','done'),('default','=',True)])
+            servers = SMTP.search([
+                    ('state','=','done'),
+                    ('default','=',True),
+                    ])
             if not len(servers)>0:
                 self.raise_user_error('smtp_server_default')
         server = template and template.smtp_server or servers[0]
@@ -380,7 +375,10 @@ class Template(ModelSQL, ModelView):
         :param email_message: Data email to extract values
         """
         cursor = Transaction().cursor
-        cursor.execute("SELECT state from ir_module_module where state='installed' and name = 'party_event'")
+        cursor.execute(
+            "SELECT state "
+            "from ir_module_module "
+            "where state='installed' and name = 'party_event'")
         party_event = cursor.fetchall()
         if party_event and template.party:
             party = self.eval(template, template.party, record)
