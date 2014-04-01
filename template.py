@@ -211,7 +211,7 @@ class Template(ModelSQL, ModelView):
                 'sender': 'sender',
                 'to': 'to',
                 'cc': 'cc',
-                'bcc': 'bcc',
+                #~ 'bcc': 'bcc',
                 'subject': 'subject',
                 'message_id': 'message-id',
                 'in_reply_to': 'in-reply-to',
@@ -298,8 +298,15 @@ class Template(ModelSQL, ModelView):
         ElectronicMail = Pool().get('electronic.mail')
         for record in records:
             email_message = self.render(template, record)
+
+            context = {}
+            field_expression = getattr(template, 'bcc')
+            eval_result = self.eval(template, field_expression, record)
+            if eval_result:
+                context['bcc'] = eval_result
+
             electronic_email = ElectronicMail.create_from_email(
-                email_message, template.mailbox.id)
+                email_message, template.mailbox.id, context)
             self.send_email(electronic_email, template)
             self.add_event(template, record, electronic_email, email_message)  # add event
         return True
