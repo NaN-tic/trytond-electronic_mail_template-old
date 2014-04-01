@@ -98,7 +98,7 @@ class Template(ModelSQL, ModelView):
         super(Template, cls).__setup__()
         cls._error_messages.update({
                 'smtp_error': 'Wrong connection to SMTP server. Email have not sent',
-                'recipients_error': 'Not valid recipients emails. Check emails in TO, CC or BBC',
+                'recipients_error': 'Not valid recipients emails. Check emails in To, Cc or Bcc',
                 'smtp_server_default': 'There are not default SMTP server',
                 })
 
