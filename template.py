@@ -195,7 +195,7 @@ class Template(ModelSQL, ModelView):
         :return: 'email.message.Message' instance
         '''
 
-        message = MIMEMultipart('alternative')
+        message = MIMEMultipart()
         message['date'] = formatdate(localtime=1)
 
         language = Transaction().context.get('language', 'en_US')
@@ -260,8 +260,10 @@ class Template(ModelSQL, ModelView):
                             html,
                             signature.encode("utf8").replace('\n', '<br>'),
                             )
-            message.attach(MIMEText(plain, _charset='utf-8'))
-            message.attach(MIMEText(html, 'html', _charset='utf-8'))
+            body = MIMEMultipart('alternative')
+            body.attach(MIMEText(plain, _charset='utf-8'))
+            body.attach(MIMEText(html, 'html', _charset='utf-8'))
+            message.attach(body)
 
         return message
 
