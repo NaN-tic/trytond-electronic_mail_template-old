@@ -108,7 +108,7 @@ botón que tiene para tal efecto.
 .. inheritref:: electronic_mail_template/electronic_mail:section:informes
 
 Informes
---------
+========
 
 En la plantilla puede seleccionar los informes que se adjuntarán en el correo
 electrónico.
@@ -133,7 +133,46 @@ Por ejemplo en un pedido de venta podemos personalizar el informe con el nombre:
 .. inheritref:: electronic_mail_template/electronic_mail:section:firma
 
 Firma
------
+=====
 
 En la plantilla podemos seleccionar la opción **Firma**. Esta opción nos
 añadirá la firma del usuario de Tryton en la firma del correo.
+
+Destinatarios
+=============
+
+A continuación se muestran algunos ejemplos para añadir en el campo "Destinatarios"
+en la plantilla de correo para obtener los correos electrónicos a que se deben enviar:
+
+Correo por defecto del tercero:
+
+.. code::
+
+    ${record.email or ''}
+    ${record.get_mechanism('email') or ''}
+
+Todos los correos del tercero:
+
+.. code::
+
+    ${','.join([x.email for x in record.party.contact_mechanisms if x.type == 'email']) or ''}
+
+Todos los correos relacionados con las direcciones del tercero:
+
+.. code::
+
+    ${','.join([x.email for x in record.addresses if x.email]) or record.get_mechanism('email') or ''}
+
+Enviar correos a los usuarios que han creado o modificado un registro:
+
+.. code::
+
+    ${record.write_uid and record.write_uid.email or record.create_uid.email}
+
+En el caso que el objeto sea una factura, pedido de venta, la información del correo
+estaría dentro del campo "party". Consulte a los campos del modelo para saber que campo
+debemos relacionarlo.
+
+.. code::
+
+    ${record.invoice_address.email or record.party.get_mechanism('email') or ''}
