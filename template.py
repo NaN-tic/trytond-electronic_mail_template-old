@@ -130,15 +130,14 @@ class Template(ModelSQL, ModelView):
         '''It should be possible to overwrite templates'''
         return True
 
-    @classmethod
-    def eval(self, template, expression, record):
+    def eval(self, expression, record):
         '''Evaluates the given :attr:expression
 
         :param template: Browse record of the template
         :param expression: Expression to evaluate
         :param record: The browse record of the record
         '''
-        engine_method = getattr(self, '_engine_' + template.engine)
+        engine_method = getattr(self, '_engine_' + self.engine)
         return engine_method(expression, record)
 
     @staticmethod
@@ -200,7 +199,7 @@ class Template(ModelSQL, ModelView):
 
         language = Transaction().context.get('language', 'en_US')
         if template.language:
-            language = self.eval(template, template.language, record)
+            language = self.eval(template.language, record)
 
         with Transaction().set_context(language=language):
             template = self(template.id)
@@ -218,7 +217,7 @@ class Template(ModelSQL, ModelView):
                 }
             for field_name in simple_fields.keys():
                 field_expression = getattr(template, field_name)
-                eval_result = self.eval(template, field_expression, record)
+                eval_result = template.eval(field_expression, record)
                 if eval_result:
                     message[simple_fields[field_name]] = eval_result
 
@@ -228,7 +227,7 @@ class Template(ModelSQL, ModelView):
                 for report in reports:
                     ext, data, filename, file_name = report[0:5]
                     if file_name:
-                        filename = self.eval(template, file_name, record)
+                        filename = template.eval(file_name, record)
                     filename = ext and '%s.%s' % (filename, ext) or filename
                     content_type, _ = mimetypes.guess_type(filename)
                     maintype, subtype = (
@@ -245,8 +244,8 @@ class Template(ModelSQL, ModelView):
                     message.attach(attachment)
 
             # HTML & Text Alternate parts
-            plain = self.eval(template, template.plain, record)
-            html = self.eval(template, template.html, record)
+            plain = template.eval(template.plain, record)
+            html = template.eval(template.html, record)
             if template.signature:
                 User = Pool().get('res.user')
                 user = User(Transaction().user)
@@ -303,7 +302,7 @@ class Template(ModelSQL, ModelView):
 
             context = {}
             field_expression = getattr(template, 'bcc')
-            eval_result = self.eval(template, field_expression, record)
+            eval_result = template.eval(field_expression, record)
             if eval_result:
                 context['bcc'] = eval_result
 
@@ -390,7 +389,7 @@ class Template(ModelSQL, ModelView):
             "where state='installed' and name = 'party_event'")
         party_event = cursor.fetchall()
         if party_event and template.party:
-            party = self.eval(template, template.party, record)
+            party = template.eval(template.party, record)
             resource = 'electronic.mail,%s' % electronic_email.id
             values = {
                 'subject': decode_header(email_message.get('subject'))[0][0],
