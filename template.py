@@ -133,7 +133,6 @@ class Template(ModelSQL, ModelView):
     def eval(self, expression, record):
         '''Evaluates the given :attr:expression
 
-        :param template: Browse record of the template
         :param expression: Expression to evaluate
         :param record: The browse record of the record
         '''
@@ -199,7 +198,7 @@ class Template(ModelSQL, ModelView):
 
         language = Transaction().context.get('language', 'en_US')
         if template.language:
-            language = self.eval(template.language, record)
+            language = template.eval(template.language, record)
 
         with Transaction().set_context(language=language):
             template = self(template.id)
