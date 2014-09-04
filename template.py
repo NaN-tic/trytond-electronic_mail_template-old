@@ -248,16 +248,15 @@ class Template(ModelSQL, ModelView):
             if template.signature:
                 User = Pool().get('res.user')
                 user = User(Transaction().user)
+                if user.signature_html:
+                    signature = user.signature_html.encode("utf8")
+                    html = '%s<br>--<br>%s' % (html, signature)
                 if user.signature:
-                    signature = user.signature
-                    plain = '%s\n--\n%s' % (
-                            plain,
-                            signature.encode("utf8"),
-                            )
-                    html = '%s<br>--<br>%s' % (
-                            html,
-                            signature.encode("utf8").replace('\n', '<br>'),
-                            )
+                    signature = user.signature.encode("utf-8")
+                    plain = '%s\n--\n%s' % (plain, signature)
+                    if not user.signature_html:
+                        html = '%s<br>--<br>%s' % (html,
+                            signature.replace('\n', '<br>'))
             body = MIMEMultipart('alternative')
             body.attach(MIMEText(plain, _charset='utf-8'))
             body.attach(MIMEText(html, 'html', _charset='utf-8'))
