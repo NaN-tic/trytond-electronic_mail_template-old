@@ -46,16 +46,16 @@ def split_emails(emails):
     return emails.split(';')
 
 
-def recepients_from_fields(email_record):
+def recipients_from_fields(email_record):
     """
     Returns a list of email addresses who are the recipients of this email
 
     :param email_record: Browse record of the email
     """
-    recepients = []
+    recipients = []
     for field in ('to', 'cc', 'bcc'):
-        recepients.extend(split_emails(getattr(email_record, field)))
-    return recepients
+        recipients.extend(split_emails(getattr(email_record, field)))
+    return recipients
 
 __all__ = ['Template', 'TemplateReport']
 
@@ -338,7 +338,7 @@ class Template(ModelSQL, ModelView):
         SMTP = Pool().get('smtp.server')
 
         email = ElectronicMail(email_id)
-        recepients = recepients_from_fields(email)
+        recipients = recipients_from_fields(email)
 
         """SMTP Server from template or default"""
         if not template:
@@ -351,7 +351,7 @@ class Template(ModelSQL, ModelView):
         server = template and template.smtp_server or servers[0]
 
         """Validate recipients to send or move email to draft mailbox"""
-        emails = ",".join(recepients)
+        emails = ",".join(recipients)
         if not ElectronicMail.validate_emails(emails.split(',')) and template:
             """Draft Mailbox. Not send email"""
             ElectronicMail.write([email], {
@@ -361,7 +361,7 @@ class Template(ModelSQL, ModelView):
 
         try:
             server = SMTP.get_smtp_server(server)
-            server.sendmail(email.from_, recepients,
+            server.sendmail(email.from_, recipients,
                 ElectronicMail._get_email(email))
             server.quit()
             ElectronicMail.write([email], {
