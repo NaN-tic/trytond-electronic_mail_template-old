@@ -16,10 +16,6 @@ msgctxt "error:electronic.mail.template:"
 msgid "Wrong connection to SMTP server. Email have not sent"
 msgstr "No se ha podido conectar al servidor SMTP. Correo no enviado"
 
-msgctxt "error:electronic.mail:"
-msgid "Invalid email. Please, check the email before save it."
-msgstr "Correo electrónico no válido. Revise los correos antes de enviar."
-
 msgctxt "field:electronic.mail,body_html:"
 msgid "HTML (BODY)"
 msgstr "HTML (BODY)"
@@ -43,6 +39,10 @@ msgstr "CC"
 msgctxt "field:electronic.mail.template,create_date:"
 msgid "Create Date"
 msgstr "Fecha creación"
+
+msgctxt "field:electronic.mail.template,create_message_id:"
+msgid "Message ID"
+msgstr "Mensaje ID"
 
 msgctxt "field:electronic.mail.template,create_uid:"
 msgid "Create User"
@@ -176,6 +176,10 @@ msgctxt "field:ir.trigger,email_template:"
 msgid "Template"
 msgstr "Plantilla"
 
+msgctxt "help:electronic.mail.template,create_message_id:"
+msgid "Generate Message ID when send email"
+msgstr "Genera Message Id cuando se envia el correo"
+
 msgctxt "help:electronic.mail.template,language:"
 msgid "Expression to find the ISO langauge code"
 msgstr "Expresión para encontrar el código ISO del idioma"
@@ -229,18 +233,6 @@ msgstr "General"
 msgctxt "view:electronic.mail.template:"
 msgid "Reports"
 msgstr "Informes"
-
-msgctxt "view:electronic.mail:"
-msgid "Email File"
-msgstr "Fichero Email"
-
-msgctxt "view:electronic.mail:"
-msgid "HTML"
-msgstr "HTML"
-
-msgctxt "view:electronic.mail:"
-msgid "Plain Text"
-msgstr "Texto plano"
 
 msgctxt "view:electronic.mail:"
 msgid "Send Email"

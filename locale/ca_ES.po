@@ -16,11 +16,6 @@ msgctxt "error:electronic.mail.template:"
 msgid "Wrong connection to SMTP server. Email have not sent"
 msgstr "Ha fallat la connexió servidor SMTP. No s'ha enviat el correu."
 
-msgctxt "error:electronic.mail:"
-msgid "Invalid email. Please, check the email before save it."
-msgstr ""
-"Correu electrònic no es correcte. Revisa els destinataris abans d'enviar."
-
 msgctxt "field:electronic.mail,body_html:"
 msgid "HTML (BODY)"
 msgstr "HTML (Body)"
@@ -44,6 +39,10 @@ msgstr "CC"
 msgctxt "field:electronic.mail.template,create_date:"
 msgid "Create Date"
 msgstr "Data creació"
+
+msgctxt "field:electronic.mail.template,create_message_id:"
+msgid "Message ID"
+msgstr "Missatge ID"
 
 msgctxt "field:electronic.mail.template,create_uid:"
 msgid "Create User"
@@ -177,6 +176,10 @@ msgctxt "field:ir.trigger,email_template:"
 msgid "Template"
 msgstr "Plantilla"
 
+msgctxt "help:electronic.mail.template,create_message_id:"
+msgid "Generate Message ID when send email"
+msgstr "Genera un Message ID quan envia el correu"
+
 msgctxt "help:electronic.mail.template,language:"
 msgid "Expression to find the ISO langauge code"
 msgstr "Expressió per cercar el codi ISO del idioma"
@@ -229,18 +232,6 @@ msgstr "General"
 msgctxt "view:electronic.mail.template:"
 msgid "Reports"
 msgstr "Informes"
-
-msgctxt "view:electronic.mail:"
-msgid "Email File"
-msgstr "Fitxer Email"
-
-msgctxt "view:electronic.mail:"
-msgid "HTML"
-msgstr "HTML"
-
-msgctxt "view:electronic.mail:"
-msgid "Plain Text"
-msgstr "Text pla"
 
 msgctxt "view:electronic.mail:"
 msgid "Send Email"
