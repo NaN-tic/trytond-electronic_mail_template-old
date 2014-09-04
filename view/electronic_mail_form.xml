@@ -3,7 +3,7 @@
 The COPYRIGHT file at the top level of this repository contains the full copyright notices and license terms. -->
 <data>
     <xpath
-        expr="/form/group[@id=&quot;send_area&quot;]/field[@name=&quot;flag_send&quot;]"
+        expr="/form/group[@id=&quot;send_area&quot;]/field[@name=&quot;flag_received&quot;]"
         position="after">
         <button name="send_mail" string="Send Email" icon="tryton-ok"/>
     </xpath>

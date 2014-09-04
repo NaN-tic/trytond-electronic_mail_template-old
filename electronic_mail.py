@@ -3,7 +3,7 @@
 #the full copyright notices and license terms.
 from trytond.model import ModelView, fields
 from trytond.pool import Pool, PoolMeta
-from trytond.pyson import Eval
+from trytond.pyson import Eval, Bool
 
 __all__ = ['ElectronicMail']
 __metaclass__ = PoolMeta
@@ -18,7 +18,9 @@ class ElectronicMail:
         super(ElectronicMail, cls).__setup__()
         cls._buttons.update({
                 'send_mail': {
-                    'invisible': Eval('body_plain') == '',
+                    'invisible': ((Bool(Eval('body_plain') == '') &
+                            Bool(Eval('body_html') == '')) |
+                        Eval('flag_received')),
                     },
                 })
 
