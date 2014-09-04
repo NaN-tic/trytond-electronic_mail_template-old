@@ -1,18 +1,15 @@
-# -*- coding: UTF-8 -*-
 #This file is part electronic_mail_template module for Tryton.
 #The COPYRIGHT file at the top level of this repository contains 
 #the full copyright notices and license terms.
-from email import message_from_string
-from trytond.model import ModelView, ModelSQL, fields
-from trytond.pool import Pool
+from trytond.model import ModelView, fields
+from trytond.pool import Pool, PoolMeta
 from trytond.pyson import Eval
-import base64
 
 __all__ = ['ElectronicMail']
+__metaclass__ = PoolMeta
 
 
-class ElectronicMail(ModelSQL, ModelView):
-    "E-Mail module extended to suit inbuilt reading and templating"
+class ElectronicMail:
     __name__ = 'electronic.mail'
     subject = fields.Char('Subject', translate=True)
 
