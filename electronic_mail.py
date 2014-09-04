@@ -14,12 +14,7 @@ __all__ = ['ElectronicMail']
 class ElectronicMail(ModelSQL, ModelView):
     "E-Mail module extended to suit inbuilt reading and templating"
     __name__ = 'electronic.mail'
-
     subject = fields.Char('Subject', translate=True)
-    body_html = fields.Function(
-        fields.Text('HTML (BODY)'), 'get_email_body')
-    body_plain = fields.Function(
-        fields.Text('Plain Text (BODY)'), 'get_email_body')
 
     @classmethod
     def __setup__(cls):
@@ -29,17 +24,6 @@ class ElectronicMail(ModelSQL, ModelView):
                     'invisible': Eval('body_plain') == '',
                     },
                 })
-
-    def get_email_body(self, name):
-        """Returns the email body
-        """
-        result = ''
-        message = message_from_string(self._get_email(self))
-        for part in message.walk():
-            content_type = part.get_content_type()
-            if content_type == 'text/plain':
-                result = base64.b64decode(part.get_payload())
-        return result
 
     @classmethod
     def check_xml_record(cls, records, values):
