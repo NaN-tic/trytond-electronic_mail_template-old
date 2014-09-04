@@ -92,6 +92,8 @@ class Template(ModelSQL, ModelView):
         'will be appened to the mail.')
     message_id = fields.Char('Message-ID', help='Unique Message Identifier')
     in_reply_to = fields.Char('In Repply To')
+    create_message_id = fields.Boolean('Message ID',
+        help='Generate Message ID when send email')
 
     @classmethod
     def __setup__(cls):
