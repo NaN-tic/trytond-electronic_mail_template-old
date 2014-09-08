@@ -19,7 +19,7 @@ class ElectronicMail:
                 'send_mail': {
                     'invisible': ((Bool(Eval('body_plain') == '') &
                             Bool(Eval('body_html') == '')) |
-                        Eval('flag_received')),
+                        ~Eval('flag_send')),
                     },
                 })
 
