@@ -11,7 +11,6 @@ __metaclass__ = PoolMeta
 
 class ElectronicMail:
     __name__ = 'electronic.mail'
-    subject = fields.Char('Subject', translate=True)
 
     @classmethod
     def __setup__(cls):
