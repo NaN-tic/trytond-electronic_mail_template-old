@@ -69,8 +69,8 @@ msgid "ID"
 msgstr "ID"
 
 msgctxt "field:electronic.mail.template,in_reply_to:"
-msgid "In Repply To"
-msgstr "In Repply To"
+msgid "In Reply To"
+msgstr "In Reply To"
 
 msgctxt "field:electronic.mail.template,language:"
 msgid "Language"
