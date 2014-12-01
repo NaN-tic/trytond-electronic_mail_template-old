@@ -69,6 +69,7 @@ class Template(ModelSQL, ModelView):
     to = fields.Char('To')
     cc = fields.Char('CC')
     bcc = fields.Char('BCC')
+    reply_to = fields.Char('Reply To')
     subject = fields.Char('Subject', translate=True)
     smtp_server = fields.Many2One('smtp.server', 'SMTP Server',
         domain=[('state', '=', 'done')], required=True)
@@ -221,6 +222,11 @@ class Template(ModelSQL, ModelView):
                 eval_result = template.eval(field_expression, record)
                 if eval_result:
                     message[simple_fields[field_name]] = eval_result
+
+            if template.reply_to:
+                eval_result = template.eval(template.reply_to, record)
+                if eval_result:
+                    message['reply-to'] = eval_result
 
             # Attach reports
             if template.reports:
