@@ -230,7 +230,7 @@ class Template(ModelSQL, ModelView):
 
             # Attach reports
             if template.reports:
-                reports = cls.render_reports(template, record)
+                reports = template.render_reports(record)
                 for report in reports:
                     ext, data, filename, file_name = report[0:5]
                     if file_name:
@@ -272,8 +272,7 @@ class Template(ModelSQL, ModelView):
 
         return message
 
-    @classmethod
-    def render_reports(cls, template, record):
+    def render_reports(self, record):
         '''Renders the reports and returns as a list of tuple
 
         :param template: Browse Record of the template
