@@ -275,7 +275,6 @@ class Template(ModelSQL, ModelView):
     def render_reports(self, record):
         '''Renders the reports and returns as a list of tuple
 
-        :param template: Browse Record of the template
         :param record: Browse Record of the record on which the template
             is to generate the data on
         :return: List of tuples with:
