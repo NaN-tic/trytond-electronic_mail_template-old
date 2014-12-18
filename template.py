@@ -285,7 +285,7 @@ class Template(ModelSQL, ModelView):
             the report file name (optional)
         '''
         reports = []
-        for report_action in template.reports:
+        for report_action in self.reports:
             report = Pool().get(report_action.report_name, type='report')
             reports.append([report.execute([record.id], {'id': record.id}),
                 report_action.file_name])
