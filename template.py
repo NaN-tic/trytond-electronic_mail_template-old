@@ -93,8 +93,6 @@ class Template(ModelSQL, ModelView):
         'will be appened to the mail.')
     message_id = fields.Char('Message-ID', help='Unique Message Identifier')
     in_reply_to = fields.Char('In Reply To')
-    create_message_id = fields.Boolean('Message ID',
-        help='Generate Message ID when send email')
 
     @classmethod
     def __setup__(cls):
@@ -265,6 +263,14 @@ class Template(ModelSQL, ModelView):
                     if not user.signature_html:
                         html = '%s<br>--<br>%s' % (html,
                             signature.replace('\n', '<br>'))
+            html = """
+                <html>
+                <head><head>
+                <body>
+                %s
+                </body>
+                </html>
+                """ % html
             body = MIMEMultipart('alternative')
             body.attach(MIMEText(plain, _charset='utf-8'))
             body.attach(MIMEText(html, 'html', _charset='utf-8'))

@@ -40,10 +40,6 @@ msgctxt "field:electronic.mail.template,create_date:"
 msgid "Create Date"
 msgstr "Data creació"
 
-msgctxt "field:electronic.mail.template,create_message_id:"
-msgid "Message ID"
-msgstr "Missatge ID"
-
 msgctxt "field:electronic.mail.template,create_uid:"
 msgid "Create User"
 msgstr "Crear usuari"
@@ -82,7 +78,7 @@ msgstr "Bústia de correu"
 
 msgctxt "field:electronic.mail.template,message_id:"
 msgid "Message-ID"
-msgstr "Missatge-ID"
+msgstr "Missatge ID"
 
 msgctxt "field:electronic.mail.template,model:"
 msgid "Model"
@@ -175,10 +171,6 @@ msgstr "Nom del fitxer"
 msgctxt "field:ir.trigger,email_template:"
 msgid "Template"
 msgstr "Plantilla"
-
-msgctxt "help:electronic.mail.template,create_message_id:"
-msgid "Generate Message ID when send email"
-msgstr "Genera un Message ID quan envia el correu"
 
 msgctxt "help:electronic.mail.template,language:"
 msgid "Expression to find the ISO langauge code"
