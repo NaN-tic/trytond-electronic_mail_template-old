@@ -383,14 +383,12 @@ class Template(ModelSQL, ModelView):
             cls.raise_user_error('smtp_error')
         return True
 
-    @classmethod
-    def add_event(cls, template, record, electronic_email, email_message):
+    def add_event(self, record, electronic_email):
         """
         Add event if party_event is installed
         :param template: Browse Record of the template
         :param record: Browse record of the record
         :param electronic_email: Browse record email to send
-        :param email_message: Data email to extract values
         """
         cursor = Transaction().cursor
         cursor.execute(
@@ -398,11 +396,11 @@ class Template(ModelSQL, ModelView):
             "from ir_module_module "
             "where state='installed' and name = 'party_event'")
         party_event = cursor.fetchall()
-        if party_event and template.party:
-            party = template.eval(template.party, record)
+        if party_event and self.party:
+            party = self.eval(self.party, record)
             resource = 'electronic.mail,%s' % electronic_email.id
             values = {
-                'subject': decode_header(email_message.get('subject'))[0][0],
+                'subject': electronic_email.subject,
                 'description': electronic_email.body_plain,
                 }
             Pool().get('party.event').create_event(party, resource, values)
