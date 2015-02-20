@@ -28,35 +28,6 @@ except ImportError:
     logging.getLogger('electronic_mail_template').error(
         'Unable to import jinja2. Install jinja2 package.')
 
-
-def split_emails(emails):
-    """Email IDs could be separated by ';' or ','
-
-    >>> email_list = '1@x.com;2@y.com , 3@z.com '
-    >>> emails = split_emails(email_list)
-    >>> emails
-    ['1@x.com', '2@y.com', '3@z.com']
-
-    :param email_ids: email id
-    :type email_ids: str or unicode
-    """
-    if not emails:
-        return []
-    emails = emails.replace(' ', '').replace(',', ';')
-    return emails.split(';')
-
-
-def recipients_from_fields(email_record):
-    """
-    Returns a list of email addresses who are the recipients of this email
-
-    :param email_record: Browse record of the email
-    """
-    recipients = []
-    for field in ('to', 'cc', 'bcc'):
-        recipients.extend(split_emails(getattr(email_record, field)))
-    return recipients
-
 __all__ = ['Template', 'TemplateReport']
 
 
@@ -318,8 +289,8 @@ class Template(ModelSQL, ModelView):
 
             electronic_email = ElectronicMail.create_from_email(
                 email_message, template.mailbox.id, context)
-            cls.send_email(electronic_email, template)
-            cls.add_event(template, record, electronic_email, email_message)  # add event
+            electronic_email.send_email()
+            template.add_event(record, electronic_email)  # add event
         return True
 
     @classmethod
@@ -336,52 +307,6 @@ class Template(ModelSQL, ModelView):
         Trigger = Pool().get('ir.trigger')
         trigger = Trigger(trigger_id)
         return cls.render_and_send(trigger.email_template.id, records)
-
-    @classmethod
-    def send_email(cls, email_id, template=False):
-        """
-        Send out the given email using the SMTP_CLIENT if configured in the
-        Tryton Server configuration
-
-        :param email_id: ID of the email to be sent
-        :param template: Browse Record of the template
-        """
-        ElectronicMail = Pool().get('electronic.mail')
-        SMTP = Pool().get('smtp.server')
-
-        email = ElectronicMail(email_id)
-        recipients = recipients_from_fields(email)
-
-        """SMTP Server from template or default"""
-        if not template:
-            servers = SMTP.search([
-                    ('state','=','done'),
-                    ('default','=',True),
-                    ])
-            if not len(servers)>0:
-                cls.raise_user_error('smtp_server_default')
-        server = template and template.smtp_server or servers[0]
-
-        """Validate recipients to send or move email to draft mailbox"""
-        emails = ",".join(recipients)
-        if not ElectronicMail.validate_emails(emails.split(',')) and template:
-            """Draft Mailbox. Not send email"""
-            ElectronicMail.write([email], {
-                'mailbox': template.draft_mailbox,
-                })
-            return False
-
-        try:
-            server = SMTP.get_smtp_server(server)
-            server.sendmail(email.from_, recipients,
-                ElectronicMail._get_email(email))
-            server.quit()
-            ElectronicMail.write([email], {
-                'flag_send': True,
-                })
-        except:
-            cls.raise_user_error('smtp_error')
-        return True
 
     def add_event(self, record, electronic_email):
         """
