@@ -12,31 +12,27 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
     <field name="language"/>
     <notebook colspan="4">
         <page string="General" id="general">
+            <label name="subject" xalign="0.1"/>
+            <field name="subject" colspan="3"/>
             <group colspan="2" col="2" id="addresses">
-                <label name="to"/>
-                <field name="to"/>
+                <label name="from_"/>
+                <field name="from_"/>
                 <label name="cc"/>
                 <field name="cc"/>
-                <label name="bcc"/>
-                <field name="bcc"/>
                 <label name="reply_to"/>
                 <field name="reply_to"/>
-                <label name="message_id"/>
-                <field name="message_id"/>
                 <label name="in_reply_to"/>
                 <field name="in_reply_to"/>
             </group>
             <group colspan="2" col="2" id="other_main_info">
-                <label name="from_"/>
-                <field name="from_"/>
-                <label name="mailbox"/>
-                <field name="mailbox"/>
-                <label name="draft_mailbox"/>
-                <field name="draft_mailbox"/>
-                <label name="subject"/>
-                <field name="subject"/>
+                <label name="to"/>
+                <field name="to"/>
+                <label name="bcc"/>
+                <field name="bcc"/>
                 <label name="signature"/>
                 <field name="signature"/>
+                <label name="message_id"/>
+                <field name="message_id"/>
             </group>
             <group colspan="2" id="body_text">
                 <separator name="plain" colspan="4"/>
