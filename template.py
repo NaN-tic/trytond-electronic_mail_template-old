@@ -46,8 +46,6 @@ class Template(ModelSQL, ModelView):
         domain=[('state', '=', 'done')], required=True)
     name = fields.Char('Name', required=True, translate=True)
     model = fields.Many2One('ir.model', 'Model', required=True)
-    mailbox = fields.Many2One('electronic.mail.mailbox', 'Mailbox', required=True)
-    draft_mailbox = fields.Many2One('electronic.mail.mailbox', 'Draft Mailbox', required=True)
     language = fields.Char('Language', help='Expression to find the ISO langauge code')
     plain = fields.Text('Plain Text Body', translate=True)
     html = fields.Text('HTML Body', translate=True)
@@ -275,8 +273,10 @@ class Template(ModelSQL, ModelView):
         :param template_id: ID template
         :param records: List Object of the records
         """
+        pool = Pool()
         template = cls(template_id)
-        ElectronicMail = Pool().get('electronic.mail')
+        ElectronicMail = pool.get('electronic.mail')
+        EmailConfiguration = pool.get('electronic.mail.configuration')
         for record in records:
             email_message = cls.render(template, record)
 
@@ -285,9 +285,11 @@ class Template(ModelSQL, ModelView):
             eval_result = template.eval(field_expression, record)
             if eval_result:
                 context['bcc'] = eval_result
+            email_configuration = EmailConfiguration(1)
+            mailbox = email_configuration.outbox
 
             electronic_email = ElectronicMail.create_from_email(
-                email_message, template.mailbox.id, context)
+                email_message, mailbox.id, context)
             electronic_email.send_email()
             template.add_event(record, electronic_email)  # add event
         return True
