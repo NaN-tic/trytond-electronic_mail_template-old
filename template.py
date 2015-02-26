@@ -12,7 +12,6 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email.utils import formatdate
 from email import Encoders
-from email.header import decode_header
 
 from genshi.template import TextTemplate
 from trytond.model import ModelView, ModelSQL, fields
