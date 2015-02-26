@@ -61,6 +61,9 @@ class Template(ModelSQL, ModelView):
         'will be appened to the mail.')
     message_id = fields.Char('Message-ID', help='Unique Message Identifier')
     in_reply_to = fields.Char('In Reply To')
+    queue = fields.Boolean('Queue',
+        help='Put these messages in the output mailbox instead of sending '
+            'them immediately.')
 
     @classmethod
     def __setup__(cls):
@@ -285,12 +288,16 @@ class Template(ModelSQL, ModelView):
             if eval_result:
                 context['bcc'] = eval_result
             email_configuration = EmailConfiguration(1)
-            mailbox = email_configuration.outbox
+            if template.queue:
+                mailbox = email_configuration.outbox
+            else:
+                mailbox = email_configuration.sent
 
             electronic_email = ElectronicMail.create_from_email(
                 email_message, mailbox.id, context)
-            electronic_email.send_email()
-            template.add_event(record, electronic_email)  # add event
+            if not template.queue:
+                electronic_email.send_email()
+                template.add_event(record, electronic_email)  # add event
         return True
 
     @classmethod
