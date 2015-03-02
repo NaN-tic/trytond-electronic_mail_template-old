@@ -138,6 +138,14 @@ Firma
 En la plantilla podemos seleccionar la opción **Firma**. Esta opción nos
 añadirá la firma del usuario de Tryton en la firma del correo.
 
+.. inheritref:: electronic_mail_template/electronic_mail:section:colas
+
+Colas
+=====
+
+Si selecciona la opción de "Colas" el correo no se enviará en el momento de renderizar el correo. Estará
+disponible al buzón de salida y se enviará según la configuración de la acción planificada.
+
 Destinatarios
 =============
 
