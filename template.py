@@ -297,6 +297,8 @@ class Template(ModelSQL, ModelView):
                 email_message, mailbox.id, context)
             if not template.queue:
                 electronic_email.send_email()
+                logging.getLogger('Mail').info('Send email: %s' %
+                    (electronic_email.rec_name))
                 template.add_event(record, electronic_email)  # add event
         return True
 
