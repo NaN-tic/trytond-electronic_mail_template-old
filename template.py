@@ -14,6 +14,7 @@ from email.utils import formatdate
 from email import Encoders
 
 from genshi.template import TextTemplate
+from trytond import backend
 from trytond.model import ModelView, ModelSQL, fields
 from trytond.tools import safe_eval
 from trytond.transaction import Transaction
@@ -72,6 +73,18 @@ class Template(ModelSQL, ModelView):
                 'recipients_error': 'Not valid recipients emails. Check emails in To, Cc or Bcc',
                 'smtp_server_default': 'There are not default SMTP server',
                 })
+
+    @classmethod
+    def __register__(cls, module_name):
+        TableHandler = backend.get('TableHandler')
+        cursor = Transaction().cursor
+        table = TableHandler(cursor, cls, module_name)
+
+        super(Template, cls).__register__(module_name)
+
+        # Migration from 3.2: drop required on mailbox and draft_mailbox
+        table.not_null_action('mailbox', action='remove')
+        table.not_null_action('draft_mailbox', action='remove')
 
     @staticmethod
     def default_template():
