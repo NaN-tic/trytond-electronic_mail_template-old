@@ -6,8 +6,8 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
     <field name="name"/>
     <label name="model"/>
     <field name="model"/>
-    <label name="smtp_server"/>
-    <field name="smtp_server"/>
+    <label name="mailbox"/>
+    <field name="mailbox"/>
     <label name="language"/>
     <field name="language"/>
     <notebook colspan="4">
@@ -51,6 +51,8 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
             <field name="in_reply_to"/>
             <label name="queue"/>
             <field name="queue"/>
+            <label name="mailbox_outbox"/>
+            <field name="mailbox_outbox"/>
             <separator name="triggers" colspan="4"/>
             <field name="triggers" colspan="4"/>
         </page>

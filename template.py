@@ -42,8 +42,6 @@ class Template(ModelSQL, ModelView):
     bcc = fields.Char('BCC')
     reply_to = fields.Char('Reply To')
     subject = fields.Char('Subject', translate=True)
-    smtp_server = fields.Many2One('smtp.server', 'SMTP Server',
-        domain=[('state', '=', 'done')], required=True)
     name = fields.Char('Name', required=True, translate=True)
     model = fields.Many2One('ir.model', 'Model', required=True)
     language = fields.Char('Language', help='Expression to find the ISO langauge code')
@@ -65,6 +63,12 @@ class Template(ModelSQL, ModelView):
     queue = fields.Boolean('Queue',
         help='Put these messages in the output mailbox instead of sending '
             'them immediately.')
+    mailbox = fields.Many2One('electronic.mail.mailbox', 'Mailbox',
+        help='Mailbox send mail')
+    mailbox_outbox = fields.Many2One('electronic.mail.mailbox', 'Outbox Mailbox',
+        states={
+            'invisible': ~Eval('queue', True),
+        }, depends=['queue'], help='Mailbox outbox to send mail')
 
     @classmethod
     def __setup__(cls):
@@ -84,7 +88,10 @@ class Template(ModelSQL, ModelView):
 
         # Migration from 3.2: drop required on mailbox and draft_mailbox
         table.not_null_action('mailbox', action='remove')
-        table.not_null_action('draft_mailbox', action='remove')
+        if (table.column_exist('draft_mailbox')):
+            table.not_null_action('draft_mailbox', action='remove')
+        if (table.column_exist('smtp_server')):
+            table.not_null_action('smtp_server', action='remove')
 
     @classmethod
     def check_xml_record(cls, records, values):
@@ -112,11 +119,6 @@ class Template(ModelSQL, ModelView):
         if jinja2_loaded:
             engines.append(('jinja2', 'Jinja2'))
         return engines
-
-    @classmethod
-    def check_xml_record(cls, records, values):
-        '''It should be possible to overwrite templates'''
-        return True
 
     def eval(self, expression, record):
         '''Evaluates the given :attr:expression
@@ -286,16 +288,16 @@ class Template(ModelSQL, ModelView):
         return [(r[0][0], r[0][1], r[0][3], r[1]) for r in reports]
 
     @classmethod
-    def render_and_send(cls, template_id, records):
+    def render_and_send(cls, template, records):
         """
         Render the template and send
-        :param template_id: ID template
+        :param template_id: Template
         :param records: List Object of the records
         """
         pool = Pool()
-        template = cls(template_id)
         ElectronicMail = pool.get('electronic.mail')
         EmailConfiguration = pool.get('electronic.mail.configuration')
+
         for record in records:
             email_message = cls.render(template, record)
 
@@ -306,12 +308,14 @@ class Template(ModelSQL, ModelView):
                 context['bcc'] = eval_result
             email_configuration = EmailConfiguration(1)
             if template.queue:
-                mailbox = email_configuration.outbox
+                mailbox = template.mailbox_outbox \
+                    if template.mailbox_outbox else email_configuration.outbox
             else:
-                mailbox = email_configuration.sent
+                mailbox = template.mailbox if template.mailbox \
+                    else email_configuration.sent
 
             electronic_email = ElectronicMail.create_from_email(
-                email_message, mailbox.id, context)
+                email_message, mailbox, context)
             if not template.queue:
                 electronic_email.send_email()
                 logging.getLogger('Mail').info('Send email: %s' %
@@ -332,7 +336,7 @@ class Template(ModelSQL, ModelView):
         """
         Trigger = Pool().get('ir.trigger')
         trigger = Trigger(trigger_id)
-        return cls.render_and_send(trigger.email_template.id, records)
+        return cls.render_and_send(trigger.email_template, records)
 
     def add_event(self, record, electronic_email):
         """
