@@ -64,6 +64,14 @@ msgctxt "field:electronic.mail.template,language:"
 msgid "Language"
 msgstr "Idioma"
 
+msgctxt "field:electronic.mail.template,mailbox:"
+msgid "Mailbox"
+msgstr "Bústia de correu"
+
+msgctxt "field:electronic.mail.template,mailbox_outbox:"
+msgid "Outbox Mailbox"
+msgstr "Bústia de sortida"
+
 msgctxt "field:electronic.mail.template,message_id:"
 msgid "Message-ID"
 msgstr "Missatge ID"
@@ -103,10 +111,6 @@ msgstr "Enviat per"
 msgctxt "field:electronic.mail.template,signature:"
 msgid "Use Signature"
 msgstr "Utilitzar la signatura"
-
-msgctxt "field:electronic.mail.template,smtp_server:"
-msgid "SMTP Server"
-msgstr "Servidor SMTP"
 
 msgctxt "field:electronic.mail.template,subject:"
 msgid "Subject"
@@ -171,6 +175,14 @@ msgstr "Plantilla"
 msgctxt "help:electronic.mail.template,language:"
 msgid "Expression to find the ISO langauge code"
 msgstr "Expressió per cercar el codi ISO del idioma"
+
+msgctxt "help:electronic.mail.template,mailbox:"
+msgid "Mailbox send mail"
+msgstr "Bústia per enviar correu"
+
+msgctxt "help:electronic.mail.template,mailbox_outbox:"
+msgid "Mailbox outbox to send mail"
+msgstr "Bústia de sortida per enviar correu"
 
 msgctxt "help:electronic.mail.template,message_id:"
 msgid "Unique Message Identifier"
