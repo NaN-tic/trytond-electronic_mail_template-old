@@ -86,6 +86,10 @@ class Template(ModelSQL, ModelView):
         table.not_null_action('mailbox', action='remove')
         table.not_null_action('draft_mailbox', action='remove')
 
+    @classmethod
+    def check_xml_record(cls, records, values):
+        return True
+
     @staticmethod
     def default_template():
         return True
