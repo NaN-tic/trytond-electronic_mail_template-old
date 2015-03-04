@@ -66,9 +66,7 @@ class Template(ModelSQL, ModelView):
     mailbox = fields.Many2One('electronic.mail.mailbox', 'Mailbox',
         help='Mailbox send mail')
     mailbox_outbox = fields.Many2One('electronic.mail.mailbox', 'Outbox Mailbox',
-        states={
-            'invisible': ~Eval('queue', True),
-        }, depends=['queue'], help='Mailbox outbox to send mail')
+        help='Mailbox outbox to send mail')
 
     @classmethod
     def __setup__(cls):
