@@ -368,3 +368,7 @@ class TemplateReport(ModelSQL):
 
     template = fields.Many2One('electronic.mail.template', 'Template')
     report = fields.Many2One('ir.action.report', 'Report')
+
+    @classmethod
+    def check_xml_record(cls, records, values):
+        return True
