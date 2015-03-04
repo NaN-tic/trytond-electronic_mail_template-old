@@ -241,7 +241,3 @@ msgstr "General"
 msgctxt "view:electronic.mail.template:"
 msgid "Reports"
 msgstr "Informes"
-
-msgctxt "view:electronic.mail:"
-msgid "Send Email"
-msgstr "Enviar correo"
