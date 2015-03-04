@@ -4,14 +4,11 @@
 # the full copyright notices and license terms.
 from trytond.pool import Pool
 from .template import *
-from .electronic_mail import *
 from .trigger import *
 from .report import *
 
-
 def register():
     Pool.register(
-        ElectronicMail,
         ActionReport,
         Template,
         TemplateReport,
