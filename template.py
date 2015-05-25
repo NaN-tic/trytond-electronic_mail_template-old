@@ -11,7 +11,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email.utils import formatdate
-from email import Encoders
+from email import Encoders, charset
 
 from genshi.template import TextTemplate
 from trytond import backend
@@ -259,6 +259,7 @@ class Template(ModelSQL, ModelView):
                 </html>
                 """ % html
             body = MIMEMultipart('alternative')
+            charset.add_charset('utf-8', charset.QP, charset.QP)
             body.attach(MIMEText(plain, _charset='utf-8'))
             body.attach(MIMEText(html, 'html', _charset='utf-8'))
             message.attach(body)
