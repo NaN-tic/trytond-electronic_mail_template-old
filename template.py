@@ -7,6 +7,7 @@ from __future__ import with_statement
 
 import mimetypes
 import logging
+from os import path, listdir
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
@@ -29,6 +30,9 @@ except ImportError:
         'Unable to import jinja2. Install jinja2 package.')
 
 __all__ = ['Template', 'TemplateReport']
+
+def styles_dir():
+    return '%s/styles/' % (path.dirname(path.realpath(__file__)))
 
 
 class Template(ModelSQL, ModelView):
@@ -67,6 +71,10 @@ class Template(ModelSQL, ModelView):
         help='Mailbox send mail')
     mailbox_outbox = fields.Many2One('electronic.mail.mailbox', 'Outbox Mailbox',
         help='Mailbox outbox to send mail')
+    style = fields.Selection('get_style', 'Style',
+        help='HTML CSS style')
+    custom_style = fields.Text('Custom Style',
+        help='Custom HTML CSS style')
 
     @classmethod
     def __setup__(cls):
@@ -117,6 +125,13 @@ class Template(ModelSQL, ModelView):
         if jinja2_loaded:
             engines.append(('jinja2', 'Jinja2'))
         return engines
+
+    @classmethod
+    def get_style(cls):
+        styles = [(None, '')]
+        for s in listdir(styles_dir()):
+            styles.append((s, s[:-4].capitalize()))
+        return styles
 
     def eval(self, expression, record):
         '''Evaluates the given :attr:expression
@@ -250,14 +265,29 @@ class Template(ModelSQL, ModelView):
                     if not user.signature_html:
                         html = '%s<br>--<br>%s' % (html,
                             signature.replace('\n', '<br>'))
+
+            style = ''
+            if template.style:
+                fname = '%s/%s' % (styles_dir(), template.style)
+                with open(fname) as f:
+                    style = f.read()
+                if template.custom_style:
+                    style += '\n%s' % template.custom_style
+            elif template.custom_style:
+                style = '%s' % template.custom_style
+
             html = """
                 <html>
                 <head><head>
+                <style>
+                %s
+                </style>
                 <body>
                 %s
                 </body>
                 </html>
-                """ % html
+                """ % (style, html)
+
             body = MIMEMultipart('alternative')
             charset.add_charset('utf-8', charset.QP, charset.QP)
             body.attach(MIMEText(plain, _charset='utf-8'))
