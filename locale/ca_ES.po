@@ -40,6 +40,10 @@ msgctxt "field:electronic.mail.template,create_uid:"
 msgid "Create User"
 msgstr "Crear usuari"
 
+msgctxt "field:electronic.mail.template,custom_style:"
+msgid "Custom Style"
+msgstr "Estilo personalizado"
+
 msgctxt "field:electronic.mail.template,engine:"
 msgid "Engine"
 msgstr "Motor"
@@ -112,6 +116,10 @@ msgctxt "field:electronic.mail.template,signature:"
 msgid "Use Signature"
 msgstr "Utilitzar la signatura"
 
+msgctxt "field:electronic.mail.template,style:"
+msgid "Style"
+msgstr "Estil"
+
 msgctxt "field:electronic.mail.template,subject:"
 msgid "Subject"
 msgstr "Assumpte"
@@ -172,6 +180,10 @@ msgctxt "field:ir.trigger,email_template:"
 msgid "Template"
 msgstr "Plantilla"
 
+msgctxt "help:electronic.mail.template,custom_style:"
+msgid "Custom HTML CSS style"
+msgstr "HTML CSS estilo personalizado"
+
 msgctxt "help:electronic.mail.template,language:"
 msgid "Expression to find the ISO langauge code"
 msgstr "Expressió per cercar el codi ISO del idioma"
@@ -199,6 +211,10 @@ msgstr ""
 msgctxt "help:electronic.mail.template,signature:"
 msgid "The signature from the User details will be appened to the mail."
 msgstr "La firma del usuari serà afegit al correu"
+
+msgctxt "help:electronic.mail.template,style:"
+msgid "HTML CSS style"
+msgstr "HTML CSS estilo"
 
 msgctxt "help:ir.action.report,file_name:"
 msgid ""
