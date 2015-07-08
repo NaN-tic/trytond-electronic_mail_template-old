@@ -8,10 +8,6 @@ msgstr ""
 "Los correos electrónicos no son válidos. Revise los correos de los "
 "destinatarios, copia y copia oculta."
 
-msgctxt "error:electronic.mail.template:"
-msgid "There are not default SMTP server"
-msgstr "No se ha encontrado ningún servidor SMTP."
-
 msgctxt "field:electronic.mail,body_html:"
 msgid "HTML (BODY)"
 msgstr "HTML (BODY)"
