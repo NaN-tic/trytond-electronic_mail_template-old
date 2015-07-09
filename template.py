@@ -312,8 +312,7 @@ class Template(ModelSQL, ModelView):
         # The boolean for direct print in the tuple is useless for emails
         return [(r[0][0], r[0][1], r[0][3], r[1]) for r in reports]
 
-    @classmethod
-    def render_and_send(cls, template, records):
+    def render_and_send(self, records):
         """
         Render the template and send
         :param template_id: Template
@@ -324,28 +323,28 @@ class Template(ModelSQL, ModelView):
         EmailConfiguration = pool.get('electronic.mail.configuration')
 
         for record in records:
-            email_message = cls.render(template, record)
+            email_message = self.render(record)
 
             context = {}
-            field_expression = getattr(template, 'bcc')
-            eval_result = template.eval(field_expression, record)
+            field_expression = getattr(self, 'bcc')
+            eval_result = self.eval(field_expression, record)
             if eval_result:
                 context['bcc'] = eval_result
             email_configuration = EmailConfiguration(1)
-            if template.queue:
-                mailbox = template.mailbox_outbox \
-                    if template.mailbox_outbox else email_configuration.outbox
+            if self.queue:
+                mailbox = self.mailbox_outbox \
+                    if self.mailbox_outbox else email_configuration.outbox
             else:
-                mailbox = template.mailbox if template.mailbox \
+                mailbox = self.mailbox if self.mailbox \
                     else email_configuration.sent
 
             electronic_email = ElectronicMail.create_from_email(
                 email_message, mailbox, context)
-            if not template.queue:
+            if not self.queue:
                 electronic_email.send_email()
                 logging.getLogger('Mail').info('Send email: %s' %
                     (electronic_email.rec_name))
-                template.add_event(record, electronic_email)  # add event
+                self.add_event(record, electronic_email)  # add event
         return True
 
     @classmethod
@@ -361,7 +360,7 @@ class Template(ModelSQL, ModelView):
         """
         Trigger = Pool().get('ir.trigger')
         trigger = Trigger(trigger_id)
-        return cls.render_and_send(trigger.email_template, records)
+        return trigger.email_template.render_and_send(records)
 
     def add_event(self, record, electronic_email):
         """
