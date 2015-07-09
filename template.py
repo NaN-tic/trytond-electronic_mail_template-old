@@ -186,10 +186,8 @@ class Template(ModelSQL, ModelView):
         template_context = cls.template_context(record)
         return template.render(template_context).encode('utf-8')
 
-    @classmethod
-    def render(cls, template, record):
+    def render(self, record):
         '''Renders the template and returns as email object
-        :param template: Browse Record of the template
         :param record: Browse Record of the record on which the template
             is to generate the data on
         :return: 'email.message.Message' instance
@@ -199,11 +197,10 @@ class Template(ModelSQL, ModelView):
         message['date'] = formatdate(localtime=1)
 
         language = Transaction().context.get('language', 'en_US')
-        if template.language:
-            language = template.eval(template.language, record)
+        if self.language:
+            language = self.eval(self.language, record)
 
         with Transaction().set_context(language=language):
-            template = cls(template.id)
 
             # Simple rendering fields
             simple_fields = {
@@ -217,23 +214,23 @@ class Template(ModelSQL, ModelView):
                 'in_reply_to': 'in-reply-to',
                 }
             for field_name in simple_fields.keys():
-                field_expression = getattr(template, field_name)
-                eval_result = template.eval(field_expression, record)
+                field_expression = getattr(self, field_name)
+                eval_result = self.eval(field_expression, record)
                 if eval_result:
                     message[simple_fields[field_name]] = eval_result
 
-            if template.reply_to:
-                eval_result = template.eval(template.reply_to, record)
+            if self.reply_to:
+                eval_result = self.eval(self.reply_to, record)
                 if eval_result:
                     message['reply-to'] = eval_result
 
             # Attach reports
-            if template.reports:
-                reports = template.render_reports(record)
+            if self.reports:
+                reports = self.render_reports(record)
                 for report in reports:
                     ext, data, filename, file_name = report[0:5]
                     if file_name:
-                        filename = template.eval(file_name, record)
+                        filename = self.eval(file_name, record)
                     filename = ext and '%s.%s' % (filename, ext) or filename
                     content_type, _ = mimetypes.guess_type(filename)
                     maintype, subtype = (
@@ -250,9 +247,9 @@ class Template(ModelSQL, ModelView):
                     message.attach(attachment)
 
             # HTML & Text Alternate parts
-            plain = template.eval(template.plain, record)
-            html = template.eval(template.html, record)
-            if template.signature:
+            plain = self.eval(self.plain, record)
+            html = self.eval(self.html, record)
+            if self.signature:
                 User = Pool().get('res.user')
                 user = User(Transaction().user)
                 if user.signature_html:
@@ -266,14 +263,14 @@ class Template(ModelSQL, ModelView):
                             signature.replace('\n', '<br>'))
 
             style = ''
-            if template.style:
-                fname = '%s/%s' % (styles_dir(), template.style)
+            if self.style:
+                fname = '%s/%s' % (styles_dir(), self.style)
                 with open(fname) as f:
                     style = f.read()
-                if template.custom_style:
-                    style += '\n%s' % template.custom_style
-            elif template.custom_style:
-                style = '%s' % template.custom_style
+                if self.custom_style:
+                    style += '\n%s' % self.custom_style
+            elif self.custom_style:
+                style = '%s' % self.custom_style
 
             html = """
                 <html>
