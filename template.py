@@ -339,12 +339,14 @@ class Template(ModelSQL, ModelView):
 
             electronic_email = ElectronicMail.create_from_email(
                 email_message, mailbox, context)
+            if not electronic_email: # not configured mailbox
+                return
             if not self.queue:
                 electronic_email.send_email()
                 logging.getLogger('Mail').info('Send email: %s' %
                     (electronic_email.rec_name))
                 self.add_event(record, electronic_email)  # add event
-        return True
+        return
 
     @classmethod
     def mail_from_trigger(cls, records, trigger_id):
