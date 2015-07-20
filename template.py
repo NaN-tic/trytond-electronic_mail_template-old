@@ -387,6 +387,29 @@ class Template(ModelSQL, ModelView):
             Pool().get('party.event').create_event(party, resource, values)
         return True
 
+    def get_attachments(self, records):
+        record_ids = [r.id for r in records]
+        attachments = []
+        for report in self.reports:
+            report = Pool().get(report.report_name, type='report')
+            ext, data, filename, file_name = report.execute(record_ids, {})
+
+            if file_name:
+                filename = self.eval(file_name, record_ids).decode('utf-8')
+            filename = ext and '%s.%s' % (filename, ext) or filename
+            content_type, _ = mimetypes.guess_type(filename)
+            maintype, subtype = (
+                content_type or 'application/octet-stream'
+                ).split('/', 1)
+
+            attachment = MIMEBase(maintype, subtype)
+            attachment.set_payload(data)
+            Encoders.encode_base64(attachment)
+            attachment.add_header(
+                'Content-Disposition', 'attachment', filename=filename)
+            attachments.append(attachment)
+        return attachments
+
 
 class TemplateReport(ModelSQL):
     'Template - Report Action'
