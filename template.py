@@ -4,29 +4,29 @@
 # the full copyright notices and license terms.
 "Email Template"
 from __future__ import with_statement
-
-import mimetypes
-import logging
 from os import path, listdir
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email.utils import formatdate
 from email import Encoders, charset
-
 from genshi.template import TextTemplate
 from trytond import backend
 from trytond.model import ModelView, ModelSQL, fields
 from trytond.transaction import Transaction
 from trytond.pyson import Eval
 from trytond.pool import Pool
+import mimetypes
+import logging
+
+logger = logging.getLogger(__name__)
+
 try:
     from jinja2 import Template as Jinja2Template
     jinja2_loaded = True
 except ImportError:
     jinja2_loaded = False
-    logging.getLogger('electronic_mail_template').error(
-        'Unable to import jinja2. Install jinja2 package.')
+    logger.error('Unable to import jinja2. Install jinja2 package.')
 
 __all__ = ['Template', 'TemplateReport']
 
@@ -343,7 +343,7 @@ class Template(ModelSQL, ModelView):
                 return
             if not self.queue:
                 electronic_email.send_email()
-                logging.getLogger('Mail').info('Send email: %s' %
+                logger.info('Send email: %s' %
                     (electronic_email.rec_name))
                 self.add_event(record, electronic_email)  # add event
         return
