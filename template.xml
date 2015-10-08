@@ -46,4 +46,12 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
         <field name="group" ref="electronic_mail.group_email_admin"/>
     </record>
   </data>
+
+  <data depends="activity">
+    <record model="ir.ui.view" id="activity_template_view_form">
+      <field name="model">electronic.mail.template</field>
+      <field name="inherit" ref="electronic_mail_template.template_view_form"/>
+      <field name="name">activity_electronic_mail_template_form</field>
+     </record>
+  </data>
 </tryton>

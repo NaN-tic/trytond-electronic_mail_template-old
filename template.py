@@ -74,6 +74,9 @@ class Template(ModelSQL, ModelView):
         help='HTML CSS style')
     custom_style = fields.Text('Custom Style',
         help='Custom HTML CSS style')
+    activity = fields.Char('Activity',
+        help='Generate a new activity record related a party:\n' \
+            '${record.party.id}')
 
     @classmethod
     def __setup__(cls):
@@ -314,13 +317,13 @@ class Template(ModelSQL, ModelView):
     def render_and_send(self, records):
         """
         Render the template and send
-        :param template_id: Template
         :param records: List Object of the records
         """
         pool = Pool()
         ElectronicMail = pool.get('electronic.mail')
         EmailConfiguration = pool.get('electronic.mail.configuration')
 
+        activities = []
         for record in records:
             email_message = self.render(record)
 
@@ -345,7 +348,14 @@ class Template(ModelSQL, ModelView):
                 electronic_email.send_email()
                 logger.info('Send email: %s' %
                     (electronic_email.rec_name))
-                self.add_event(record, electronic_email)  # add event
+                activities.append({
+                    'record': record,
+                    'template': self,
+                    'mail': electronic_email,
+                    })
+
+        if activities:
+            self.add_activities(activities)  # add activities
         return
 
     @classmethod
@@ -363,28 +373,63 @@ class Template(ModelSQL, ModelView):
         trigger = Trigger(trigger_id)
         return trigger.email_template.render_and_send(records)
 
-    def add_event(self, record, electronic_email):
+    @classmethod
+    def add_activities(cls, records):
         """
-        Add event if party_event is installed
-        :param template: Browse Record of the template
-        :param record: Browse record of the record
-        :param electronic_email: Browse record email to send
+        Add activities related to party
+        :param records: {'record', 'template', 'mail'}
         """
         cursor = Transaction().cursor
         cursor.execute(
             "SELECT state "
             "from ir_module "
-            "where state='installed' and name = 'party_event'")
-        party_event = cursor.fetchall()
-        if party_event and self.party:
-            party = self.eval(self.party, record)
-            resource = 'electronic.mail,%s' % electronic_email.id
-            values = {
-                'subject': electronic_email.subject,
-                'description': electronic_email.body_plain,
-                }
-            Pool().get('party.event').create_event(party, resource, values)
-        return True
+            "where state='installed' and name = 'activity'")
+        activity_installed = cursor.fetchall()
+        if not activity_installed:
+            return
+
+        pool = Pool()
+        Activity = pool.get('activity.activity')
+        ActivityType = pool.get('activity.type')
+        ActivityReference = pool.get('activity.reference')
+        ModelData = pool.get('ir.model.data')
+        Party = pool.get('party.party')
+
+        type_id = ActivityType(ModelData.get_id(
+            'activity', 'outgoing_email_type'))
+
+        activities = []
+        for r in records:
+            record = r['record']
+            template = r['template']
+            mail = r['mail']
+
+            if template.activity:
+                activity = Activity()
+                activity.activity_type = type_id
+                activity.subject = mail.subject
+                activity.activity_type
+                activity.resource = 'electronic.mail,%s' % mail.id
+                activity.state = 'held'
+                activity.description = mail.body_plain
+
+                party = template.eval(template.activity, record)
+                if party:
+                    activity.party = Party(party)
+
+                resources = ActivityReference.search([
+                    ('model', '=', template.model)
+                    ])
+                if resources:
+                    resource, = resources
+                    activity.resource = '%s,%s' % (
+                        resource.model.model,
+                        record.id)
+
+                activities.append(activity)
+
+        if activities:
+            Activity.save(activities)
 
     def get_attachments(self, records):
         record_ids = [r.id for r in records]
