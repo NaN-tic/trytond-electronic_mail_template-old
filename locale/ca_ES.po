@@ -1,4 +1,4 @@
-# 
+#
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
 
@@ -19,6 +19,10 @@ msgstr "Text pla (BODY)"
 msgctxt "field:electronic.mail,flag_send:"
 msgid "Sent"
 msgstr "Enviat"
+
+msgctxt "field:electronic.mail.template,activity:"
+msgid "Activity"
+msgstr "Activitat"
 
 msgctxt "field:electronic.mail.template,bcc:"
 msgid "BCC"
@@ -175,6 +179,14 @@ msgstr "Nom del fitxer"
 msgctxt "field:ir.trigger,email_template:"
 msgid "Template"
 msgstr "Plantilla"
+
+msgctxt "help:electronic.mail.template,activity:"
+msgid ""
+"Generate a new activity record related a party:\n"
+"${record.party.id}"
+msgstr ""
+"Genera una nova activitat relacionada amb el tercer:\n"
+"${record.party.id}"
 
 msgctxt "help:electronic.mail.template,custom_style:"
 msgid "Custom HTML CSS style"
