@@ -408,10 +408,8 @@ class Template(ModelSQL, ModelView):
                 activity = Activity()
                 activity.activity_type = type_id
                 activity.subject = mail.subject
-                activity.activity_type
-                activity.resource = 'electronic.mail,%s' % mail.id
-                activity.state = 'held'
                 activity.description = mail.body_plain
+                activity.state = 'held'
 
                 party = template.eval(template.activity, record)
                 if party:
