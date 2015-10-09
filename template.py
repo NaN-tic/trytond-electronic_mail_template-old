@@ -100,6 +100,10 @@ class Template(ModelSQL, ModelView):
         if (table.column_exist('smtp_server')):
             table.not_null_action('smtp_server', action='remove')
 
+        # Migration from 3.6: change party to activity field
+        if (table.column_exist('party')):
+            table.column_rename('party', 'activity')
+
     @classmethod
     def check_xml_record(cls, records, values):
         return True
