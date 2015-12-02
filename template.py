@@ -2,7 +2,6 @@
 # This file is part electronic_mail_template module for Tryton.
 # The COPYRIGHT file at the top level of this repository contains
 # the full copyright notices and license terms.
-"Email Template"
 from __future__ import with_statement
 from os import path, listdir
 from email.mime.multipart import MIMEMultipart
@@ -106,10 +105,6 @@ class Template(ModelSQL, ModelView):
 
     @classmethod
     def check_xml_record(cls, records, values):
-        return True
-
-    @staticmethod
-    def default_template():
         return True
 
     @staticmethod
