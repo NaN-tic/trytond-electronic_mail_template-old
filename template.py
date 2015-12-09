@@ -90,6 +90,10 @@ class Template(ModelSQL, ModelView):
         cursor = Transaction().cursor
         table = TableHandler(cursor, cls, module_name)
 
+        # Migration from 3.6: change party to activity field
+        if (table.column_exist('party')):
+            table.column_rename('party', 'activity')
+
         super(Template, cls).__register__(module_name)
 
         # Migration from 3.2: drop required on mailbox and draft_mailbox
@@ -98,10 +102,6 @@ class Template(ModelSQL, ModelView):
             table.not_null_action('draft_mailbox', action='remove')
         if (table.column_exist('smtp_server')):
             table.not_null_action('smtp_server', action='remove')
-
-        # Migration from 3.6: change party to activity field
-        if (table.column_exist('party')):
-            table.column_rename('party', 'activity')
 
     @classmethod
     def check_xml_record(cls, records, values):
