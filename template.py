@@ -417,11 +417,12 @@ class Template(ModelSQL, ModelView):
                 resources = ActivityReference.search([
                     ('model', '=', template.model)
                     ])
-                if resources:
-                    resource, = resources
-                    activity.resource = '%s,%s' % (
-                        resource.model.model,
-                        record.id)
+                if not resources:
+                    continue
+                resource, = resources
+                activity.resource = '%s,%s' % (
+                    resource.model.model,
+                    record.id)
 
                 activities.append(activity)
 
