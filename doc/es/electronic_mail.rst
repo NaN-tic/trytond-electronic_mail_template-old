@@ -56,9 +56,9 @@ Como podemos observar hemos utilizado las expresiones $(record.nombre_campo)
 para indicar que queremos reemplazar estas expresiones por los valores del 
 registro desde el que estamos creando el correo electrónico. 
 
-Además, como hemos marcado la opción *Crear acción*, en el menú de albaranes de 
-clientes tendremos disponible una nueva acción llamada *Envío albarán*, que 
-podremos utilizar para enviar esta plantilla al cliente.
+Además, como hemos marcado la opción *Crear acción*, en las acciones de los
+albaranes de clientes tendremos disponible una nueva acción llamada *Envío albarán*,
+que podremos utilizar para enviar esta plantilla al cliente.
 
 .. Si clicamos en esta opción se generará la siguiente pantalla:
    Imagen pantalla enviar correo
@@ -91,7 +91,7 @@ Los disparadores se pueden evaluar en alguna de las siguientes condiciones:
     - *Al momento*: Se comprobará cada 5 minutos si algún registro del modelo
       cumple con la condición dada.
     - *Al crear*: Se comprovará la condición para cada registro que se cree.
-    - *Al modificar*: Se comprobara que el registro no cumpla la condición
+    - *Al modificar*: Se comprobará que el registro no cumpla la condición
       antes de modificar y si lo cumpla despues de la modificación del mismo.
       De esa forma solo se obtendran los registros en que los canvios haya
       provocado que la condición cambie de Falso a Verdadero.
@@ -126,21 +126,6 @@ modificación) una factura con importe superior a 10.000::
     En una plantilla relacionado con el modelo de `Facturas` crearemos un
     disparador marcando la opción `Al modificar` y la opción `Al crear`.
     Pondremos cómo condicion `self.total_amount > Decimal('10.000')`.
-
-
-.. inheritref:: electronic_mail_template/electronic_mail:section:planificador
-
-Planificador
-------------
-
-.. important:: Es importante que cambie el usuario del cron de **Run On Time
-              Triggers**, que por defecto es **Cron Trigger**, por un usuario
-              de tipo **Administrador**. Este usuario, debe tener permisos de
-              lectura y escritura de los **Buzones de correo**.
-
-              Puesto que por defecto únicamente se pueden seleccionar usuarios
-              desactivados para ejecutar crons, se debe cambiar el código del
-              servidor para poder seleccionar usuarios activos.
 
 .. inheritref:: electronic_mail_template/electronic_mail:section:envio_manual
 
