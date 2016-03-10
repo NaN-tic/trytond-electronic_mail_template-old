@@ -87,8 +87,7 @@ class Template(ModelSQL, ModelView):
     @classmethod
     def __register__(cls, module_name):
         TableHandler = backend.get('TableHandler')
-        cursor = Transaction().cursor
-        table = TableHandler(cursor, cls, module_name)
+        table = TableHandler(cls, module_name)
 
         super(Template, cls).__register__(module_name)
 
@@ -378,7 +377,7 @@ class Template(ModelSQL, ModelView):
         Add activities related to party
         :param records: {'record', 'template', 'mail'}
         """
-        cursor = Transaction().cursor
+        cursor = Transaction().connection.cursor()
         cursor.execute(
             "SELECT state "
             "from ir_module "
