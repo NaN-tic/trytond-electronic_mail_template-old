@@ -398,7 +398,7 @@ class Template(ModelSQL, ModelView):
         type_id = ActivityType(ModelData.get_id(
             'activity', 'outgoing_email_type'))
 
-        employee = Transaction.context.get('employee')
+        employee = Transaction().context.get('employee')
         user = User(Transaction().user)
         if not employee and user:
             employee = user.employee
