@@ -392,9 +392,15 @@ class Template(ModelSQL, ModelView):
         ActivityReference = pool.get('activity.reference')
         ModelData = pool.get('ir.model.data')
         Party = pool.get('party.party')
+        User = pool.get('res.user')
 
         type_id = ActivityType(ModelData.get_id(
             'activity', 'outgoing_email_type'))
+
+        employee = Transaction.context.get('employee')
+        user = User(Transaction().user)
+        if not employee and user:
+            employee = user.employee
 
         activities = []
         for r in records:
@@ -408,6 +414,7 @@ class Template(ModelSQL, ModelView):
                 activity.subject = mail.subject
                 activity.description = mail.body_plain
                 activity.state = 'held'
+                activity.employee = employee
 
                 party = template.eval(template.activity, record)
                 if party:
